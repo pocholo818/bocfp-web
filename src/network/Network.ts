@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://bocfp.com:6000",
+  baseURL: "http://bocfp-api.vercel.app",
   headers: {
     "Content-Type": "application/json"
   },
