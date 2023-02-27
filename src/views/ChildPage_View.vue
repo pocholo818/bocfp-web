@@ -1,0 +1,434 @@
+
+<template>
+    <ion-page>
+        <ion-header>
+            <ion-toolbar style="">
+                <ion-buttons slot="start">
+                    <ion-back-button text="Back" defaultHref="/child"></ion-back-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+
+        <!-- content -->
+        <ion-content>
+            <ion-card>
+                <ion-card-content>
+                    <ion-card-header>
+                        <ion-card-title>Child Information</ion-card-title>
+                    </ion-card-header>
+
+                    <!-- picture -->
+                    <!-- <img alt="picture" class="icon" src="@/assets/images/noPic.png"> -->
+                    <img alt="picture" class="icon" :src="childDetails.image">
+
+
+                    <ion-card-subtitle style="text-align: center;">CHLDID: {{ childId }}</ion-card-subtitle>
+
+                    <ion-list>
+                        <ion-item>
+                            <ion-label position="floating">First Name</ion-label>
+                            <ion-input placeholder="Enter First Name" v-model="childDetails.fname" readonly></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="floating">Last Name</ion-label>
+                            <ion-input placeholder="Enter Last Name" v-model="childDetails.lname" readonly></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="floating">Sex</ion-label>
+                            <ion-input placeholder="Enter Sex" v-model="childDetails.sex" readonly></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Birth Date:</ion-label>
+                            <input type="date" v-model="childDetails.bdate" style="color: white;" max="2099-12-31"
+                                readonly />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="floating">Age</ion-label>
+                            <ion-input placeholder="Enter Age" v-model="childDetails.age" readonly></ion-input>
+                        </ion-item><br>
+
+                        <!-- options -->
+                        <ion-card-content style="display: flex; justify-content: end;">
+                            <ion-button color="warning" :router-link="('/child_edit/' + childId)"><ion-icon
+                                    :icon="createOutline"></ion-icon>&nbsp; Edit</ion-button>
+                            <ion-button v-if="childDetails.soft_delete === 0" color="danger"
+                                @click="child_delete(childId)"><ion-icon :icon="trashOutline">
+                                </ion-icon>&nbsp;
+                                Del<span>ete</span></ion-button>
+                            <ion-button v-else color="success" @click="child_undo()"><ion-icon :icon="arrowUndoOutline">
+                                </ion-icon>&nbsp;
+                                Retrieve</ion-button>
+                        </ion-card-content>
+
+                        <!-- child's guardian -->
+                        <ion-card-header>
+                            <ion-card-title>Guardian</ion-card-title>
+                            <ion-card-subtitle v-if="guardianDetails">GRDNID: {{
+                                guardianDetails.guardian_id
+                            }}</ion-card-subtitle>
+                        </ion-card-header>
+
+                        <div v-if="guardianDetails.message">
+                            <h2 style="text-align: center;">{{ guardianDetails.message }}</h2>
+                            <br>
+                        </div>
+
+                        <div v-else>
+                            <ion-item>
+                                <ion-label position="floating">Guardian</ion-label>
+                                <ion-input placeholder="Enter Guardian Name" v-model="guardianName" readonly></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating">Relationship</ion-label>
+                                <ion-input placeholder="Enter Guardian Name" v-model="guardianDetails.relationship"
+                                    readonly></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating">Contact Number</ion-label>
+                                <ion-input type="tel" placeholder="Enter Contact Number" maxlength="11"
+                                    v-model="guardianDetails.contact" readonly></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating">Address</ion-label>
+                                <ion-input type="tel" placeholder="Enter Address" v-model="guardianDetails.address"
+                                    readonly></ion-input>
+                            </ion-item><br>
+                        </div>
+
+                        <!-- latest record -->
+                        <ion-card-header>
+                            <div style="position: absolute; right: 0; z-index: 1;padding-right: 1.5vw">
+                                <span><ion-button :router-link="('/record_add/' + childId)">+</ion-button></span>
+                            </div>
+                            <ion-card-title>Record</ion-card-title>
+                            <ion-card-subtitle>Displaying the progression and latest record</ion-card-subtitle>
+                        </ion-card-header>
+
+                        <!-- line chart -->
+                        <div v-if="!childAllRecords.message">
+                            <LineChart :data="data" :options="options" />
+                        </div>
+
+                        <div>
+                            <PageButtons :prev="prevData" :next="nextData" />
+                            <br>
+                        </div>
+
+                        <div v-if="childNewRecord.remark == ''">
+                            <h2 style="text-align: center;">{{ childNewRecord.message }}</h2>
+                        </div>
+
+                        <div v-else>
+                            <ion-item>
+                                <ion-label position="floating">Remark</ion-label>
+                                <ion-input type="text" placeholder="Enter Remark" v-model="totalRemark"
+                                    readonly></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating">Height (cm):</ion-label>
+                                <ion-input placeholder="Enter Height" v-model="childNewRecord.height" readonly></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating">Weight (kg):</ion-label>
+                                <ion-input placeholder="Enter Weight" v-model="childNewRecord.weight" readonly></ion-input>
+                            </ion-item>
+                            <ion-button :router-link="('/record_view/' + childId)">View all
+                                Records</ion-button><br>
+                        </div>
+
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-content>
+
+    </ion-page>
+</template>
+  
+<script lang="ts">
+import { defineComponent } from 'vue';
+// icons
+import {
+    eyeOutline,
+    createOutline,
+    trashOutline,
+    arrowBack,
+    arrowUndoOutline
+} from 'ionicons/icons';
+// ionic stuff
+import {
+    IonInput,
+    IonList,
+    IonCard,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardHeader,
+    IonCardContent,
+    IonButtons,
+    IonHeader,
+    IonToolbar,
+    alertController, toastController,
+    IonBackButton,
+    useIonRouter,
+
+} from '@ionic/vue';
+import { useRoute } from 'vue-router';
+import LineChart from '@/components/LineChart.vue'
+import moment from 'moment'
+import PageButtons from '@/components/PageButtons.vue';
+import { instance as api } from "@/network/Network";
+
+export default defineComponent({
+    name: 'ChildPage',
+    components: {
+        LineChart,
+        PageButtons,
+        IonInput,
+        IonList,
+        IonCard,
+        IonCardTitle,
+        IonCardSubtitle,
+        IonCardHeader,
+        IonCardContent,
+        IonButtons, IonHeader, IonToolbar,
+        IonBackButton,
+    },
+    ionViewWillEnter() {
+        this.childId = this.router.params.id + "";
+
+        api(('/child/profile/' + this.childId))
+            .then((response) => response.data)
+            .then((data) => {
+                this.childDetails = data
+
+                if (!this.childDetails.image) {
+                    this.childDetails.image = require("@/assets/images/noPic.png")
+                }
+            })
+        this.fetchGuardian()
+        this.fetchLatestRecord()
+        this.fetchRecords()
+    },
+    data() {
+        return {
+            childId: "",
+            childDetails: { "image": "" },
+            childRecords: "",
+            childNewRecord: "",
+            totalRemark: "",
+            guardianDetails: "",
+            guardianName: "",
+            childAllRecords: "",
+            limit: 5,
+            offset: 0,
+            isNextEnabled: true,
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Remarks',
+                        backgroundColor: '#f87979',
+                        data: []
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        }
+    },
+    setup() {
+        const router = useRoute();
+        const ionRouter = useIonRouter()
+
+        return {
+            router,
+            eyeOutline,
+            createOutline,
+            trashOutline,
+            arrowUndoOutline,
+            arrowBack,
+            ionRouter
+        }
+    },
+    methods: {
+        fetchGuardian() {
+            api('/link/' + this.childId + '?type=child')
+                .then((response) => response.data)
+                .then((data) => {
+                    this.guardianDetails = data
+                    this.guardianName = `${data.fname} ${data.lname}`
+                })
+        },
+        fetchLatestRecord() {
+            api('/child/newRecord/' + this.childId)
+                .then((response) => response.data)
+                .then((data) => {
+                    this.childNewRecord = data
+
+                    if (data.remark == "") {
+                        this.totalRemark = ""
+                    }
+                    else {
+                        this.totalRemark = `${data.remark} (${data.output.toFixed(2)})`
+                    }
+                });
+        },
+        fetchRecords() {
+            api(`/records/` + this.childId + `?limit=${this.limit}&offset=${this.offset}`)
+                .then((response) => response.data)
+                .then((data) => {
+                    this.childAllRecords = data
+
+                    if (data.message) {
+                        this.isNextEnabled = false
+                        return
+                    }
+                    else {
+                        this.isNextEnabled = true
+
+                        this.data.labels = data.map((item: any) => moment(String(item.date)).format('MM/DD/YYYY'))
+                        // this.data.labels = json.map((item: any) => item.remark)
+                        this.data.datasets[0].data = data.map((item: any) => item.output.toFixed(2))
+                        // this.data.datasets[0].label = json.map((item: any) => item.remark)
+                    }
+                })
+        },
+        async child_delete(id: string) {
+            const alert = await alertController.create({
+                header: 'Are you sure you want to delete?',
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'DELETE',
+                        role: 'confirm',
+                        handler: async () => {
+                            const toast = await toastController.create({
+                                duration: 1500,
+                                position: 'top'
+                            })
+
+                            const childId = this.childId
+
+                            api.put('/child/del/' + childId)
+                                .then((data) => {
+                                    toast.message = 'Success!'
+                                    this.$emit('deleted')
+                                })
+                                .catch((error) => {
+                                    toast.message = error
+                                });
+
+                            await toast.present();
+                            this.ionRouter.back()
+                        },
+                    },
+                ],
+            });
+
+            await alert.present();
+        },
+        async child_undo() {
+            const alert = await alertController.create({
+                header: 'Are you sure you want to retrieve?',
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'RETRIEVE',
+                        role: 'confirm',
+                        handler: async () => {
+                            const toast = await toastController.create({
+                                duration: 1500,
+                                position: 'top'
+                            })
+
+                            const childId = this.childId
+
+                            api.put('/child/ret/' + childId)
+                                .then((data) => {
+                                    toast.message = 'Success!'
+                                })
+                                .catch((error) => {
+                                    toast.message = error
+                                });
+
+                            await toast.present();
+                            this.ionRouter.back()
+                        },
+                    },
+                ],
+            });
+
+            await alert.present();
+        },
+        prevData() {
+            const offset = this.offset -= this.limit
+            if (offset <= 0) {
+                this.offset = 0
+            }
+            else {
+                this.offset = offset
+            }
+
+            this.fetchRecords()
+        },
+        nextData() {
+            if (this.isNextEnabled) {
+                this.offset += this.limit
+
+                this.fetchRecords()
+            }
+        },
+    },
+    watch: {
+        $route() {
+            this.$nextTick(this.fetchGuardian);
+            this.$nextTick(this.fetchLatestRecord);
+        }
+    },
+});
+
+
+
+</script>
+  
+<style scoped>
+ion-toolbar {
+    --background: #168554;
+    --color: white;
+}
+
+.icon {
+    width: 180px;
+    height: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+
+    /* phone */
+    [class*="icon"] {
+        width: 140px;
+        height: 140px;
+    }
+}
+</style>
