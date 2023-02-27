@@ -4,7 +4,8 @@ import {
 } from '@ionic/vue';
 
 const instance = axios.create({
-  baseURL: "https://bocfp-api.vercel.app",
+  // baseURL: "https://bocfp-api.vercel.app",
+  baseURL: "http://localhost:5000",
   headers: {
     "Content-Type": "application/json"
   },
@@ -36,15 +37,16 @@ instance.interceptors.response.use(
       duration: 1500,
       position: 'top'
     })
+
     if (error.response.data) {
-      toast.message = error.response.data.message ?? error.response.data;
+      toast.message = error.response.data.message;
     } else {
       toast.message = "Something went wrong with the request";
     }
 
-    if (error.response.status !== 401) {
+    // if (error.response.status !== 401) {
       await toast.present();
-    }
+    // }
     return Promise.reject(error);
   }
 );
