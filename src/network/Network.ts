@@ -37,7 +37,7 @@ instance.interceptors.response.use(
       position: 'top'
     })
     if (error.response.data) {
-      toast.message = error.response.data.message;
+      toast.message = error.response.data.message ?? error.response.data;
     } else {
       toast.message = "Something went wrong with the request";
     }
