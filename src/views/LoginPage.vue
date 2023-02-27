@@ -93,7 +93,6 @@ export default defineComponent({
             api.post('/user/login', data)
                 .then(response => response.data)
                 .then(data => {            
-                    console.log(data)
                     
                     if (data.message == "Success!") {
                         // store data
