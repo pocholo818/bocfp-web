@@ -4,7 +4,7 @@ import {
 } from '@ionic/vue';
 
 const instance = axios.create({
-  baseURL: "https://bocfp-api.vercel.app",
+  baseURL: "https://bocfp.com:6000",
   // baseURL: "http://localhost:5000",
   headers: {
     "Content-Type": "application/json"
