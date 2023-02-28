@@ -69,7 +69,7 @@
             </ion-card>
 
             <ion-button @click="fetchChildRemarks(), fetchChildCount()">Refresh Data</ion-button>
-            <ion-button href="https://bocfp-api.vercel.app/child/data">Generate Report</ion-button>
+            <ion-button href="https://bocfp.com:8080/child/data">Generate Report</ion-button>
         </ion-content>
 
     </ion-page>
