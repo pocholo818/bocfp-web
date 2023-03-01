@@ -126,15 +126,14 @@ export default defineComponent({
         position: 'top'
       })
 
-      const info = this.guardianDetails;
-      console.log(info)
-
+      const data = this.guardianDetails;
+      console.log(data)
 
       // check if inputs r empty
       if (this.guardianDetails.fname && this.guardianDetails.lname && this.guardianDetails.contact
         && this.guardianDetails.address && this.guardianDetails.household_id) {
           
-          api.post('/guardian', info)
+          api.post('/guardian', data)
           .then(response => response.data)
           .then((data) => {
             toast.message = 'Success!'
@@ -148,7 +147,8 @@ export default defineComponent({
             this.router.push("/guardian");
           })
           .catch((error) => {
-            toast.message = error.response.data.message
+            toast.message = 'error'
+            // console.log('error data:', error.response.data.message)
           });
 
       }

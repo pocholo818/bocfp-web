@@ -32,23 +32,23 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
-    const toast = await toastController.create({
-      duration: 1500,
-      position: 'top'
-    })
+  // async (error) => {
+  //   const toast = await toastController.create({
+  //     duration: 1500,
+  //     position: 'top'
+  //   })
 
-    if (error.response.data) {
-      toast.message = error.response.data.message;
-    } else {
-      toast.message = "Something went wrong with the request";
-    }
+  //   if (error.response.data) {
+  //     toast.message = error.response.data.message;
+  //   } else {
+  //     toast.message = "Something went wrong with the request";
+  //   }
 
     // if (error.response.status !== 401) {
-      await toast.present();
+      // await toast.present();
     // }
-    return Promise.reject(error);
-  }
+    // return Promise.reject(error);
+  // }
 );
 
 setInterval(() => {
