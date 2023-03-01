@@ -130,6 +130,7 @@ export default defineComponent({
       // check if inputs r empty
       if (this.guardianDetails.fname && this.guardianDetails.lname && this.guardianDetails.contact
         && this.guardianDetails.address && this.guardianDetails.household_id) {
+          
         const data = this.guardianDetails;
 
           api.post('/guardian', data)
