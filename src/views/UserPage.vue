@@ -12,6 +12,9 @@
 
     <!-- content -->
     <ion-content class="ion-padding">
+      <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
 
       <div style="max-width: 800px; margin: auto;">
 
@@ -85,6 +88,7 @@ import {
   IonButtons,
   IonTitle,
   IonSelect, IonSelectOption,
+  IonRefresher, IonRefresherContent,
 } from '@ionic/vue';
 // icons
 import {
@@ -111,6 +115,7 @@ export default defineComponent({
     IonButtons,
     IonTitle,
     IonSelect, IonSelectOption,
+    IonRefresher, IonRefresherContent,
   },
   setup() {
     return {
@@ -189,6 +194,14 @@ export default defineComponent({
         this.offset += this.limit
         this.fetchData()
       }
+    },
+    handleRefresh(event: any) {
+      setTimeout(() => {
+        // Any calls to load data go here
+        this.fetchData()
+
+        event.target.complete();
+      }, 1000);
     },
   },
   // get data
