@@ -16,10 +16,7 @@
             <template v-if="isLoaded">
               <ion-menu-toggle auto-hide="false" v-for="(pages, i) in appPages" :key="i">
                 <router-link :to="pages.url" activeClass="selected">
-                  <ion-item
-                    lines="none" detail="false" class="hydrated"
-                    :class="{'selected': $route.name === pages.url}"
-                  >
+                  <ion-item lines="none" detail="false" class="hydrated" :class="{ 'selected': $route.name === pages.url }">
                     <ion-icon slot="start" :icon="pages.icon"></ion-icon>
                     <ion-label>{{ pages.title }}</ion-label>
                   </ion-item>
@@ -30,7 +27,8 @@
           </ion-list>
 
         </ion-content>
-        <ion-button color="danger" @click="logout()" router-link="/login"><ion-icon :icon="logOutOutline"></ion-icon>Logout</ion-button>
+        <ion-button color="danger" @click="logout()" router-link="/login"><ion-icon
+            :icon="logOutOutline"></ion-icon>Logout</ion-button>
       </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-split-pane>
@@ -52,6 +50,7 @@ import {
   IonRouterOutlet,
   IonSplitPane,
   onIonViewDidEnter,
+  toastController
 } from '@ionic/vue';
 // icons
 import {
@@ -59,7 +58,7 @@ import {
   eyeOutline,
   grid,
   alertCircle,
-  person, 
+  person,
   peopleCircle,
   accessibility
 } from 'ionicons/icons';
@@ -108,7 +107,7 @@ export default defineComponent({
     ]
 
     // admin
-    if(this.user_id === '1') {
+    if (this.user_id === '1') {
       this.appPages = [
         ...appPages, // copy object content
         {
@@ -116,7 +115,7 @@ export default defineComponent({
           url: '/user',
           icon: person
         }
-      ]    
+      ]
     }
     // staff
     else {
@@ -144,14 +143,22 @@ export default defineComponent({
       user_id: ""
     }
   },
-  methods:{
-    logout(){
+  methods: {
+    async logout() {
+      const toast = await toastController.create({
+        duration: 1500,
+        position: 'top'
+      })
+
+      toast.message = 'Logout Success!'
       localStorage.removeItem('user_id')
       localStorage.removeItem('fname')
       localStorage.removeItem('admin_power')
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       localStorage.setItem('is_logged_in', 'false')
+      
+      await toast.present();
     }
   }
 });
@@ -226,7 +233,7 @@ ion-menu.md a.selected ion-item {
 }
 
 ion-menu.md a.selected ion-item ion-icon {
-  color: #168554; 
+  color: #168554;
 }
 
 ion-menu.md ion-item ion-icon {
@@ -293,7 +300,7 @@ ion-note {
   color: white;
 }
 
-ion-item{
+ion-item {
   padding-bottom: 10px;
 }
 </style>
