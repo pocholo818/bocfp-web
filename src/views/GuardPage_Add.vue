@@ -126,14 +126,14 @@ export default defineComponent({
         position: 'top'
       })
 
+      const data = this.guardianDetails;
+      console.log(data)
+
 
       // check if inputs r empty
       if (this.guardianDetails.fname && this.guardianDetails.lname && this.guardianDetails.contact
         && this.guardianDetails.address && this.guardianDetails.household_id) {
           
-        const data = this.guardianDetails;
-        console.log(data)
-
           api.post('/guardian', data)
           .then(response => response.data)
           .then((data) => {
