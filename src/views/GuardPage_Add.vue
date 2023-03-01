@@ -126,16 +126,16 @@ export default defineComponent({
         position: 'top'
       })
 
-      const data = this.guardianDetails;
-      console.log(data)
+      const info = this.guardianDetails;
+      console.log(info)
 
 
       // check if inputs r empty
       if (this.guardianDetails.fname && this.guardianDetails.lname && this.guardianDetails.contact
         && this.guardianDetails.address && this.guardianDetails.household_id) {
           
-          api.post('/guardian', data)
-          .then(response => response.data)
+          api.post('/guardian', info)
+          .then(response => response.info)
           .then((data) => {
             toast.message = 'Success!'
             this.guardianDetails = {
