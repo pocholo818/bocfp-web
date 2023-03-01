@@ -132,6 +132,7 @@ export default defineComponent({
         && this.guardianDetails.address && this.guardianDetails.household_id) {
           
         const data = this.guardianDetails;
+        console.log(data)
 
           api.post('/guardian', data)
           .then(response => response.data)
