@@ -135,7 +135,7 @@ export default defineComponent({
         && this.guardianDetails.address && this.guardianDetails.household_id) {
           
           api.post('/guardian', info)
-          .then(response => response.info)
+          .then(response => response.data)
           .then((data) => {
             toast.message = 'Success!'
             this.guardianDetails = {
