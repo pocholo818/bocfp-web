@@ -156,7 +156,7 @@ export default defineComponent({
             })
 
             // checks if empty input
-            if (this.userDetails.fname && this.userDetails.lname && this.userDetails.password
+            if (this.userDetails.fname && this.userDetails.lname && this.userDetails.password && this.userDetails.username
                 && this.userDetails.contact && this.userDetails.admin_power !== "" && this.confirmPass) {
                 // confirmation if user pass match
                 if (this.confirmPass == this.userDetails.password) {
