@@ -42,7 +42,7 @@
 
                         <ion-item>
                             <ion-label>Birth Date:</ion-label>
-                            <input type="date" v-model="childDetails.bdate" style="color: white;" max="2099-12-31"
+                            <input type="date" v-model="childDetails.bdate" max="2099-12-31"
                                 readonly />
                         </ion-item>
 
