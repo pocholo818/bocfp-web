@@ -41,7 +41,7 @@
                 <ion-label>Birth Date:</ion-label>
                 <!-- <ion-datetime-button datetime="dateOfBirth"></ion-datetime-button> -->
 
-                <input type="date" v-model="childDetails.bdate" style="color: white;" max="2099-12-31" />
+                <input type="date" v-model="childDetails.bdate" style="background-color: var(--ion-color-primary); color: white" max="2099-12-31" />
 
                 <!-- <ion-modal :keep-contents-mounted="true" class="datetime-modal">
                   <ion-datetime id="dateOfBirth" displayFormat="YYYY.MM.DD" class="dateStyle" presentation="date"

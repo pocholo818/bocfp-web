@@ -135,7 +135,7 @@ export default defineComponent({
             guardianList: [],
             guardianDel: "",
             search: "",
-            limit: 20,
+            limit: 10,
             offset: 0,
             guardFilter: "all",
             isNextEnabled: true,
