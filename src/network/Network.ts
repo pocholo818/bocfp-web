@@ -4,8 +4,8 @@ import {
 } from '@ionic/vue';
 
 const instance = axios.create({
-  baseURL: "https://bocfp.com:8080",
-  // baseURL: "http://localhost:5000",
+  // baseURL: "https://bocfp.com:8080",
+  baseURL: "http://localhost:5000",
   headers: {
     "Content-Type": "application/json"
   },
