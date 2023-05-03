@@ -46,6 +46,11 @@
                 <ion-input type="text" placeholder="Enter Address" v-model="guardProfile.address" readonly></ion-input>
               </ion-item>
 
+              <ion-item>
+                <ion-label position="floating">Purok:</ion-label>
+                <ion-input type="text" placeholder="Enter Purok" v-model="guardProfile.purok" readonly></ion-input>
+              </ion-item>
+
               <!-- options -->
               <ion-card-content style="display: flex; justify-content: end;">
                 <ion-button color="warning" :router-link="('/guardian_edit/' + guardId)"><ion-icon

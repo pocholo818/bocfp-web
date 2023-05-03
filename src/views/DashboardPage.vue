@@ -133,7 +133,7 @@ export default defineComponent({
             childRemarks: {},
             countTotalRemarks: 0,
             data: {
-                labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
+                labels: ['Underweight %', 'Normal %', 'Overweight %', 'Obese %'],
                 datasets: [
                     {
                         backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
@@ -195,8 +195,9 @@ export default defineComponent({
                 api('/child/remarks/')
                     .then((response) => response.data)
                     .then((data) => {
+                        console.log(data)
                         this.childRemarks = data
-                        this.data.datasets[0].data = [data.Underweight, data.Normal, data.Overweight, data.Obese]
+                        this.data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
                         // console.log(this.data)
                     })
             },

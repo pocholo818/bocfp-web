@@ -99,6 +99,11 @@
                                 <ion-label position="floating">Address</ion-label>
                                 <ion-input type="tel" placeholder="Enter Address" v-model="guardianDetails.address"
                                     readonly></ion-input>
+                            </ion-item>
+                            
+                            <ion-item>
+                                <ion-label position="floating">Purok:</ion-label>
+                                <ion-input type="text" placeholder="Enter Purok" v-model="guardianDetails.purok" readonly></ion-input>
                             </ion-item><br>
                         </div>
 

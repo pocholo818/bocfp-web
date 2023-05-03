@@ -44,6 +44,11 @@
                 <ion-label position="floating">Address:</ion-label>
                 <ion-input type="text" placeholder="Enter Address" v-model="guardProfile.address"></ion-input>
               </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Purok:</ion-label>
+                <ion-input type="text" placeholder="Enter Purok" v-model="guardProfile.purok"></ion-input>
+              </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
