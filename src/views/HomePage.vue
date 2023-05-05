@@ -14,7 +14,7 @@
             <ion-note>Hello {{ user_fname }}!</ion-note>
 
             <template v-if="isLoaded">
-              <ion-menu-toggle auto-hide="false" v-for="(pages, i) in appPages" :key="i">
+              <ion-menu-toggle :auto-hide="false" v-for="(pages, i) in appPages" :key="i">
                 <router-link :to="pages.url" activeClass="selected">
                   <ion-item lines="none" detail="false" class="hydrated" :class="{ 'selected': $route.name === pages.url }">
                     <ion-icon slot="start" :icon="pages.icon"></ion-icon>
@@ -169,13 +169,13 @@ a {
   text-decoration: none;
 }
 
-ion-menu {
-  --background: #168554;
+/* ion-menu {
+  --background: var(--ion-color-primary);
   --color: white;
-}
+} */
 
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #168554));
+  --background: var(--ion-color-primary);
 }
 
 ion-menu.md ion-content {
@@ -200,7 +200,7 @@ ion-menu.md ion-note {
 
 ion-menu.md ion-list#inbox-list {
   border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
-  background: #168554;
+  background: var(--ion-color-primary);
   --color: white;
 }
 
@@ -233,7 +233,7 @@ ion-menu.md a.selected ion-item {
 }
 
 ion-menu.md a.selected ion-item ion-icon {
-  color: #168554;
+  color: var(--ion-color-primary);
 }
 
 ion-menu.md ion-item ion-icon {
@@ -241,7 +241,7 @@ ion-menu.md ion-item ion-icon {
 }
 
 ion-menu.md a.selected ion-item ion-label {
-  color: #168554;
+  color: var(--ion-color-primary);
   font-weight: bold;
   text-decoration: underline;
 }

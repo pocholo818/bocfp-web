@@ -60,7 +60,7 @@ ion-buttons {
 }
 
 ion-button {
-  color: #168554;
+  color: var(--ion-color-primary);
   font-weight: bold
 }
 </style>

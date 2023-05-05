@@ -133,7 +133,7 @@ export default defineComponent({
 
 <style scoped>
 ion-content {
-    --background: #168554;
+    --background: var(--ion-color-primary);
 }
 
 .loginCard {
@@ -152,6 +152,6 @@ img {
 }
 
 /* .loginCard ion-card{
-    background-color: #168554;
+    background-color: var(--ion-color-primary);
 } */
 </style>
