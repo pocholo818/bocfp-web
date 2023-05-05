@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
@@ -13,6 +13,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-primary-contrast: #ffffff;
 	--ion-color-primary-contrast-rgb: 0,0,0;
 	--ion-color-primary-shade: #309a6b;
+  --ion-color-primary-shade-rgb: 48, 154, 107;
 	--ion-color-primary-tint: #4ab787;
 
   /** secondary **/

@@ -6,12 +6,14 @@
 
           <!-- image -->
           <img src="@/assets/images/logo.png" alt="Barangay Old Cabalan Logo"
-            style="width: 55%; height: auto; margin-left: auto; margin-right: auto; display: block;">
+            style="width: 45%; height: auto; margin-left: auto; margin-right: auto; display: block; margin-bottom: 24px">
 
           <ion-list id="inbox-list">
             <ion-list-header>Barangay Old Cabalan</ion-list-header>
             <!-- <ion-note>bofcp@gmail.com</ion-note> -->
             <ion-note>Hello {{ user_fname }}!</ion-note>
+
+            <hr style="background-color: rgb(0, 0, 0, 12%); margin-bottom: 12px;">
 
             <template v-if="isLoaded">
               <ion-menu-toggle :auto-hide="false" v-for="(pages, i) in appPages" :key="i">
@@ -21,14 +23,14 @@
                     <ion-label>{{ pages.title }}</ion-label>
                   </ion-item>
                 </router-link>
-
               </ion-menu-toggle>
             </template>
           </ion-list>
 
+          <ion-button id="button-logout" color="danger" @click="logout()" router-link="/login">
+            <ion-icon :icon="logOutOutline"></ion-icon>&nbsp;Logout
+          </ion-button>
         </ion-content>
-        <ion-button color="danger" @click="logout()" router-link="/login"><ion-icon
-            :icon="logOutOutline"></ion-icon>Logout</ion-button>
       </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-split-pane>
@@ -169,128 +171,54 @@ a {
   text-decoration: none;
 }
 
-/* ion-menu {
-  --background: var(--ion-color-primary);
-  --color: white;
-} */
+ion-menu {
+  width: 400px;
+  border-right: 1px solid var(--ion-color-primary-shade);
+}
 
+ion-menu,
 ion-menu ion-content {
   --background: var(--ion-color-primary);
+  --color: white;
 }
 
 ion-menu.md ion-content {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
+  /* --padding-start: 16px; */
+  /* --padding-end: 16px; */
+  --padding-top: 24px;
+  --padding-bottom: 16px;
 }
 
-ion-menu.md ion-list {
-  padding: 20px 0;
+ion-menu ::part(scroll) {
+  display: flex;
+  flex-direction: column;
 }
 
 ion-menu.md ion-note {
-  margin-bottom: 30px;
+  margin-bottom: 12px;
 }
 
 ion-menu.md ion-list-header,
 ion-menu.md ion-note {
-  padding-left: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 ion-menu.md ion-list#inbox-list {
-  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
-  background: var(--ion-color-primary);
+  /* border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);  */
+  background: var(--ion-color-primary-shade);
   --color: white;
+  padding: 20px 0 4px;
+  margin: calc(12px + 1%);
+  border-radius: 6px;
 }
 
 ion-menu.md ion-list#inbox-list ion-list-header {
-  font-size: 22px;
-  font-weight: 600;
-  color: white;
-  min-height: 20px;
-}
-
-ion-menu.md ion-list#labels-list ion-list-header {
-  font-size: 16px;
-
-  margin-bottom: 18px;
-
-  color: #757575;
-
-  min-height: 26px;
-}
-
-ion-menu.md ion-item {
-  --padding-start: 10px;
-  --padding-end: 10px;
-  border-radius: 4px;
-  background: transparent;
-}
-
-ion-menu.md a.selected ion-item {
-  --background: white;
-}
-
-ion-menu.md a.selected ion-item ion-icon {
-  color: var(--ion-color-primary);
-}
-
-ion-menu.md ion-item ion-icon {
-  color: #616e7e;
-}
-
-ion-menu.md a.selected ion-item ion-label {
-  color: var(--ion-color-primary);
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-ion-menu.md ion-item ion-label {
-  font-weight: 500;
-  color: #616e7e;
-}
-
-ion-menu.ios ion-content {
-  --padding-bottom: 20px;
-}
-
-ion-menu.ios ion-list {
-  padding: 20px 0 0 0;
-}
-
-ion-menu.ios ion-note {
-  line-height: 24px;
-  margin-bottom: 20px;
-}
-
-ion-menu.ios ion-item {
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --min-height: 50px;
-}
-
-ion-menu.ios ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
-}
-
-ion-menu.ios ion-item ion-icon {
   font-size: 24px;
-  color: #73849a;
-}
-
-ion-menu.ios ion-list#labels-list ion-list-header {
-  margin-bottom: 8px;
-}
-
-ion-menu.ios ion-list-header,
-ion-menu.ios ion-note {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-ion-menu.ios ion-note {
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: white;
+  min-height: 40px;
+  margin-bottom: 4px;
 }
 
 ion-note {
@@ -300,7 +228,53 @@ ion-note {
   color: white;
 }
 
-ion-item {
-  padding-bottom: 10px;
+
+
+/* nav item */
+ion-menu.md ion-item {
+  --padding-start: 16px;
+  /* --padding-end: 24px; */
+  --border-radius: 4px;
+}
+
+ion-menu.md ion-item ion-icon,
+ion-menu.md ion-item ion-label {
+  color: white;
+}
+
+ion-menu.md a ion-item {
+  --background: transparent;
+  padding: 0 12px 8px;
+}
+
+ion-menu.md a.selected ion-item {
+  --background: white;
+}
+
+ion-menu.md a.selected ion-item::part(native) {
+  box-shadow: 2px 2px 4px 0 rgb(var(--ion-color-primary-shade-rgb));
+}
+
+ion-menu.md a.selected ion-item ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-menu.md ion-item ion-label {
+  font-weight: 500;
+}
+
+ion-menu.md a.selected ion-item ion-label {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  /* text-decoration: underline; */
+}
+
+/* ion-item {
+  padding-bottom: 12px;
+} */
+
+#button-logout {
+  margin: auto 0 0;
+  padding: 0 calc(12px + 1%);
 }
 </style>
