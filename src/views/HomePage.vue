@@ -252,7 +252,7 @@ ion-menu.md a.selected ion-item {
 }
 
 ion-menu.md a.selected ion-item::part(native) {
-  box-shadow: 2px 2px 4px 0 rgb(var(--ion-color-primary-shade-rgb));
+  box-shadow: 1px 1px 8px 0 rgb(0, 0, 0, 16%);
 }
 
 ion-menu.md a.selected ion-item ion-icon {
