@@ -5,6 +5,8 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-font-family: "Schibsted Grotesk";
+
   /** primary **/
 	--ion-color-primary: #36af7a;
 	--ion-color-primary-rgb: 54,175,122;
