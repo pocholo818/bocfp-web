@@ -414,11 +414,6 @@ export default defineComponent({
 </script>
   
 <style scoped>
-ion-toolbar {
-    --background: var(--ion-color-primary);
-    --color: white;
-}
-
 .icon {
     width: 180px;
     height: 180px;

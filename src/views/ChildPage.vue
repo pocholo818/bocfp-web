@@ -18,7 +18,7 @@
 
       <div style="max-width: 800px; margin: auto;">
 
-        <ion-searchbar v-model="search"></ion-searchbar>
+        <ion-searchbar class="ion-margin-bottom" v-model="search"></ion-searchbar>
 
         <!-- search filter -->
         <ion-item>
@@ -49,9 +49,11 @@
               :router-link="('/child_view/' + child.id)">
               <ion-card-content class="ion-no-padding">
                 <ion-item lines="none">
-                  <ion-thumbnail slot="start">
-                    <img alt="picture" class="icon" :src="child.image">
-                  </ion-thumbnail>
+                  <!-- <ion-thumbnail slot="start"> -->
+                  <ion-avatar slot="start" class="icon">
+                    <img alt="picture" :src="child.image">
+                  </ion-avatar>
+                  <!-- </ion-thumbnail> -->
 
                   <ion-card-header>
                     <ion-card-title>{{ child.fname }} {{ child.lname }}</ion-card-title>
@@ -117,7 +119,7 @@ import {
   IonTitle,
   useIonRouter,
   IonSelect, IonSelectOption,
-  IonRefresher, IonRefresherContent
+  IonRefresher, IonRefresherContent, IonAvatar
 } from '@ionic/vue';
 // icons
 import {
@@ -142,12 +144,13 @@ export default defineComponent({
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonThumbnail,
+    // IonThumbnail,
     IonToolbar,
     IonHeader, IonMenuButton,
     IonButtons,
     IonTitle,
     IonSelect, IonSelectOption,
+    IonAvatar,
     IonRefresher, IonRefresherContent
   },
   setup() {
@@ -357,26 +360,26 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-content {
+  --background: var(--ion-color-light);
+}
+
 ion-button {
   --border-width: 100%;
 }
 
 .icon {
-  width: 60px;
-  height: 60px;
+  height: 56px;
+  width: 56px;
+  margin-right: 4px;
 }
 
-img[src=""] {
+.icon img {
+  height: 100%;
+}
+
+.icon img[src=""],
+.icon img:not([src]) {
   content: url('~@/assets/images/noPic.png');
-}
-
-@media only screen and (max-width: 768px) {
-  span {
-    display: none;
-  }
-
-  .hide-on-mobile {
-    display: none;
-  }
 }
 </style>

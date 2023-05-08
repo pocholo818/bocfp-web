@@ -223,13 +223,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-ion-button {
-    --border-width: 100%;
+ion-content {
+  --background: var(--ion-color-light);
 }
 
-@media only screen and (max-width: 768px) {
-    span {
-        display: none;
-    }
+ion-button {
+    --border-width: 100%;
 }
 </style>

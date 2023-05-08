@@ -237,6 +237,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-content {
+  --background: var(--ion-color-light);
+}
+
 #app-info {
     --background: #36af7a;
     --color: white;

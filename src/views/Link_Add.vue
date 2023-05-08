@@ -214,8 +214,5 @@ export default defineComponent({
   
 
 <style scoped>
-ion-toolbar {
-  --background: var(--ion-color-primary);
-  --color: white;
-}
+
 </style>

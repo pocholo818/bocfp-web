@@ -57,7 +57,7 @@
                     :icon="createOutline"></ion-icon>&nbsp; Edit</ion-button>
                 <ion-button v-if="guardProfile.soft_delete === 0" color="danger"
                   @click="guardian_delete(guardId)"><ion-icon :icon="trashOutline"></ion-icon>&nbsp;
-                  Del<span class="hide-on-mobile">ete</span></ion-button>
+                  Del<span class="hide-on-mobile abbreviation">ete</span></ion-button>
                 <ion-button v-else color="success" @click="guardian_undo()"><ion-icon :icon="arrowUndoOutline">
                   </ion-icon>&nbsp;
                   Retrieve</ion-button>
@@ -92,7 +92,7 @@
                     <ion-button color="warning" :router-link="'/link_edit/' + child.link_id"><ion-icon
                         :icon="createOutline"></ion-icon>Edit</ion-button>
                     <ion-button color="danger" @click="link_delete(child.link_id)"><ion-icon
-                        :icon="trashOutline"></ion-icon>Del<span class="hide-on-mobile">ete</span>&nbsp;Link</ion-button>
+                        :icon="trashOutline"></ion-icon>Del<span class="hide-on-mobile abbreviation">ete</span>&nbsp;Link</ion-button>
                   </ion-label>
                 </ion-item>
               </div>
@@ -325,8 +325,5 @@ export default defineComponent({
   
 
 <style scoped>
-ion-toolbar {
-  --background: var(--ion-color-primary);
-  --color: white;
-}
+
 </style>

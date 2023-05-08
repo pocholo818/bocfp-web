@@ -7,49 +7,52 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <ion-searchbar v-model="search"></ion-searchbar>
+      <div style="max-width: 800px; margin: auto;">
 
-      <!-- search filter -->
-      <ion-item v-if="admin_power === '1'">
-        <ion-select @ionChange="searchData" v-model="annouFilter" placeholder="Select Filter">
-          <ion-select-option value="all">All</ion-select-option>
-          <ion-select-option value="deleted">Deleted</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <ion-searchbar v-model="search"></ion-searchbar>
 
-      <template>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle style="text-align: center;"></ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
-      </template>
+        <!-- search filter -->
+        <ion-item v-if="admin_power === '1'">
+          <ion-select @ionChange="searchData" v-model="annouFilter" placeholder="Select Filter">
+            <ion-select-option value="all">All</ion-select-option>
+            <ion-select-option value="deleted">Deleted</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <!-- <template> -->
-      <ion-list>
-        <template v-if="annou.message">
+        <template>
           <ion-card>
             <ion-card-header>
-              <ion-card-subtitle style="text-align: center;">{{ annou.message }}</ion-card-subtitle>
+              <ion-card-subtitle style="text-align: center;"></ion-card-subtitle>
             </ion-card-header>
           </ion-card>
         </template>
 
-        <template v-else>
-          <TransitionGroup name="fade">
-            <AnnouncementCard v-for="annous in annou" :title="annous.title" :content="annous.content"
-              :date="format_date(annous.date)" :user_id="annous.user_id" :admin_power="admin_power" :annou_id="annous.annou_id" 
-              :fname="annous.fname" :lname="annous.lname" :key="annous.annou_id"
-              :soft_delete="annous.soft_delete"
-              @update-announcement-list="fetchData()" />
-          </TransitionGroup>
-        </template>
+        <!-- <template> -->
+        <ion-list>
+          <template v-if="annou.message">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-subtitle style="text-align: center;">{{ annou.message }}</ion-card-subtitle>
+              </ion-card-header>
+            </ion-card>
+          </template>
+
+          <template v-else>
+            <TransitionGroup name="fade">
+              <AnnouncementCard v-for="annous in annou" :title="annous.title" :content="annous.content"
+                :date="format_date(annous.date)" :user_id="annous.user_id" :admin_power="admin_power" :annou_id="annous.annou_id" 
+                :fname="annous.fname" :lname="annous.lname" :key="annous.annou_id"
+                :soft_delete="annous.soft_delete"
+                @update-announcement-list="fetchData()" />
+            </TransitionGroup>
+          </template>
 
 
-        <!--  -->
-      </ion-list>
+          <!--  -->
+        </ion-list>
 
-      <!-- <ion-button @click="fetchData()">refresh</ion-button> -->
+        <!-- <ion-button @click="fetchData()">refresh</ion-button> -->
+      </div>
 
     </ion-content>
 
@@ -242,7 +245,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.hide-on-mobile {
-  display: none;
+ion-content {
+  --background: var(--ion-color-light);
 }
 </style>

@@ -60,7 +60,7 @@
                                     <ion-button color="danger"
                                     @click="user_delete(userId)"><ion-icon :icon="trashOutline">
                                     </ion-icon>&nbsp;
-                                    Del<span class="hide-on-mobile">ete</span></ion-button>
+                                    Del<span class="hide-on-mobie abbreviation">ete</span></ion-button>
                                 </template>
                             </template>
                             <ion-button v-else color="success" @click="user_undo()"><ion-icon :icon="arrowUndoOutline">
