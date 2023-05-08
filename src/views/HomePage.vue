@@ -172,8 +172,7 @@ a {
 }
 
 ion-menu {
-  width: 400px;
-  border-right: 1px solid var(--ion-color-primary-shade);
+  border-right: none;
 }
 
 ion-menu,
@@ -182,16 +181,28 @@ ion-menu ion-content {
   --color: white;
 }
 
+ion-menu::part(container) {
+  /* max-width: 100px; */
+  /* max-width: 100px;
+  min-width: 100px; */
+}
+
 ion-menu.md ion-content {
   /* --padding-start: 16px; */
   /* --padding-end: 16px; */
   --padding-top: 24px;
   --padding-bottom: 16px;
+  border-right: 1px solid var(--ion-color-primary-shade);
 }
 
-ion-menu ::part(scroll) {
+ion-menu ion-content::part(scroll) {
   display: flex;
   flex-direction: column;
+}
+
+ion-split-pane {
+  --side-max-width: 22%;
+  --side-min-width: 300px;
 }
 
 ion-menu.md ion-note {
