@@ -11,7 +11,7 @@
         </ion-header>
 
         <!-- content -->
-        <ion-content class="ion-padding">
+        <ion-content class="ion-padding" style="--padding-top: 36px;">
             <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
             </ion-refresher>
