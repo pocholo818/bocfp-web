@@ -1,5 +1,26 @@
 ion-button {
+    --border-radius: 5px;
+    --box-shadow: 
+        inset 0 1px 0 0 rgb(255, 255, 255, 24%),
+        inset 0 -1px 0 0 rgb(0, 0, 0, 8%),
+        0 2px 2px 0 rgb(0, 0, 0, 12%);
+
     text-transform: capitalize;
+}
+
+ion-button.button-solid.ion-activated {
+    --box-shadow: 
+        inset 0 1px 0 0 rgb(255, 255, 255, 24%),
+        inset 0 -1px 0 0 rgb(0, 0, 0, 8%),
+        0 2px 8px 0 rgb(0, 0, 0, 24%);
+}
+
+ion-button[size="small"] {
+    --border-radius: 3px;
+}
+
+ion-button[size="large"] {
+    --border-radius: 7px;
 }
 
 ion-header ion-toolbar {
@@ -33,6 +54,15 @@ ion-modal.datetime-modal * {
         display: none;
     }
 }
+
+
+
+
+
+
+
+
+
 
 .fade-move,
 .fade-enter-active,
