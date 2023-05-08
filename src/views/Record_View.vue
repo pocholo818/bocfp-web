@@ -52,7 +52,7 @@
                             :icon="createOutline"></ion-icon>Edit</ion-button>
                         <ion-button v-if="record.soft_delete === 0" color="danger"
                           @click="record_delete(record.record_id)"><ion-icon
-                            :icon="trashOutline"></ion-icon>Del<span>ete</span></ion-button>
+                            :icon="trashOutline"></ion-icon>Del<span class="hide-on-mobile">ete</span></ion-button>
                         <ion-button v-else color="success" @click="record_undo(record.record_id)"><ion-icon
                             :icon="arrowUndoOutline">
                           </ion-icon>&nbsp;

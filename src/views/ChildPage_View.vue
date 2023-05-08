@@ -58,7 +58,7 @@
                             <ion-button v-if="childDetails.soft_delete === 0" color="danger"
                                 @click="child_delete(childId)"><ion-icon :icon="trashOutline">
                                 </ion-icon>&nbsp;
-                                Del<span>ete</span></ion-button>
+                                Del<span class="hide-on-mobile abbreviation">ete</span></ion-button>
                             <ion-button v-else color="success" @click="child_undo()"><ion-icon :icon="arrowUndoOutline">
                                 </ion-icon>&nbsp;
                                 Retrieve</ion-button>
