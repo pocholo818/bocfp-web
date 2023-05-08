@@ -28,6 +28,15 @@ ion-header ion-toolbar {
     --color: white;
 }
 
+
+
+ion-card {
+    border-radius: 7px;
+    box-shadow:
+        0 2px 3px 0 rgb(0, 0, 0, 16%),
+        0 0 0 1px rgb(0, 0, 0, 4%);
+}
+
 @media only screen and (min-width: 768px) {
 
     /* phone */
