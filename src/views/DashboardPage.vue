@@ -11,9 +11,9 @@
 
             <ion-card id="app-info" class="ion-margin-bottom">
                 <ion-card-content>
-                    BOCFP is an app that monitors children's BMI to ensure healthy growth and development.
-                    It helps identify health issues early, enables early intervention and tracks growth.
-                    It is done by calculating BMI using height and weight and comparing it to standard charts for
+                    BOCFP is an app that monitors children's BMI to ensure healthy growth and development.<br>
+                    It helps identify health issues early, enables early intervention and tracks growth.<br><br>
+                    It is done by calculating BMI using <strong><code>height</code></strong> and <strong><code>weight</code></strong> and comparing it to standard charts for
                     children of that age and gender.
                 </ion-card-content>
             </ion-card>
