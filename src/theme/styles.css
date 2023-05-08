@@ -51,6 +51,15 @@ ion-header ion-toolbar {
 
 
 
+ion-item.dropdown {
+    --border-width: 0;
+
+    border-radius: var(--element-border-radius);
+    box-shadow: var(--element-box-shadow);
+}
+
+
+
 ion-content ion-searchbar {
     --border-radius: var(--element-border-radius) !important;
     --box-shadow: var(--element-box-shadow) !important;

@@ -21,7 +21,7 @@
         <ion-searchbar class="ion-margin-bottom" v-model="search"></ion-searchbar>
 
         <!-- search filter -->
-        <ion-item>
+        <ion-item class="dropdown ion-margin-bottom" lines="none">
           <ion-select @ionChange="searchData" v-model="childFilter" placeholder="Select Filter">
             <ion-select-option value="all">All</ion-select-option>
             <ion-select-option value="male">Male</ion-select-option>

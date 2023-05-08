@@ -18,10 +18,10 @@
 
       <div style="max-width: 800px; margin: auto;">
 
-        <ion-searchbar v-model="search"></ion-searchbar>
+        <ion-searchbar class="ion-margin-bottom" v-model="search"></ion-searchbar>
 
         <!-- search filter -->
-        <ion-item>
+        <ion-item class="dropdown ion-margin-bottom" lines="none">
           <ion-select @ionChange="searchData" v-model="userFilter" placeholder="Select Filter">
             <ion-select-option value="all">All</ion-select-option>
             <ion-select-option value="deleted">Deleted</ion-select-option>

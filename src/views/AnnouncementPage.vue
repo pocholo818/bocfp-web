@@ -9,10 +9,10 @@
 
       <div style="max-width: 800px; margin: auto;">
 
-        <ion-searchbar v-model="search"></ion-searchbar>
-
+        <ion-searchbar class="ion-margin-bottom" v-model="search"></ion-searchbar>
+        
         <!-- search filter -->
-        <ion-item v-if="admin_power === '1'">
+        <ion-item class="dropdown ion-margin-bottom" lines="none" v-if="admin_power === '1'">
           <ion-select @ionChange="searchData" v-model="annouFilter" placeholder="Select Filter">
             <ion-select-option value="all">All</ion-select-option>
             <ion-select-option value="deleted">Deleted</ion-select-option>
@@ -28,7 +28,7 @@
         </template>
 
         <!-- <template> -->
-        <ion-list>
+        <!-- <ion-list> -->
           <template v-if="annou.message">
             <ion-card>
               <ion-card-header>
@@ -48,8 +48,7 @@
           </template>
 
 
-          <!--  -->
-        </ion-list>
+        <!-- </ion-list> -->
 
         <!-- <ion-button @click="fetchData()">refresh</ion-button> -->
       </div>
@@ -112,7 +111,7 @@ export default defineComponent({
     IonCard,
     IonCardSubtitle,
     IonCardHeader,
-    IonList,
+    // IonList,
     IonSelect, IonSelectOption,
     IonRefresher, IonRefresherContent,
   },
