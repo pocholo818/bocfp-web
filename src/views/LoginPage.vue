@@ -2,12 +2,16 @@
     <ion-page>
         <ion-content>
 
-            <div class="loginCard">
-                <ion-card style="width: 420px;">
+            <div id="loginCard">
+                <ion-card>
                     <ion-card-content>
-                        <ion-card-title style="text-align:center;">Login</ion-card-title><br>
+                        <ion-card-title
+                            style="font-size: 28px; font-weight: 500; text-align:center;"
+                        >
+                            Login to BOCFP
+                        </ion-card-title><br>
 
-                        <img src="@/assets/images/logo.png">
+                        <img src="@/assets/images/logo.png" class="ion-margin-bottom">
 
                         <ion-item>
                             <ion-label position="floating">Username</ion-label>
@@ -16,13 +20,13 @@
                                 v-model="loginDetails.username"></ion-input>
                         </ion-item>
 
-                        <ion-item>
+                        <ion-item class="ion-margin-bottom">
                             <ion-label position="floating">Password</ion-label>
                             <ion-input type="password" @keyup.enter="login()" placeholder="Password"
                                 v-model="loginDetails.password"></ion-input>
                         </ion-item><br>
 
-                        <ion-button @click="login()" expand="block">Login</ion-button>
+                        <ion-button size="large" @click="login()" expand="block">Login</ion-button>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -136,11 +140,19 @@ ion-content {
     --background: var(--ion-color-primary);
 }
 
-.loginCard {
+#loginCard {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#loginCard ion-card {
+    width: 500px;
+}
+
+#loginCard ion-card-content {
+    padding: 44px 32px 24px;
 }
 
 img {
