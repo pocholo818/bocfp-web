@@ -13,7 +13,8 @@
                 <ion-card-content>
                     BOCFP is an app that monitors children's BMI to ensure healthy growth and development.<br>
                     It helps identify health issues early, enables early intervention and tracks growth.<br><br>
-                    It is done by calculating BMI using <strong><code>height</code></strong> and <strong><code>weight</code></strong> and comparing it to standard charts for
+                    It is done by calculating BMI using <strong><code>height</code></strong> and
+                    <strong><code>weight</code></strong> and comparing it to standard charts for
                     children of that age and gender.
                 </ion-card-content>
             </ion-card>
@@ -37,8 +38,8 @@
                                     <!-- content -->
                                     <ion-row class="remark">
                                         <ion-col>
-                                            <ion-card-subtitle
-                                                style="background-color: #FFFF00; color: black;">Underweight: <br>{{
+                                            <ion-card-subtitle style="background-color: #FFFF00; color: black;">Underweight:
+                                                <br>{{
                                                     childRemarks.Underweight
                                                 }}</ion-card-subtitle>
                                         </ion-col>
@@ -47,8 +48,8 @@
                                                 {{ childRemarks.Normal }}</ion-card-subtitle>
                                         </ion-col>
                                         <ion-col>
-                                            <ion-card-subtitle
-                                                style="background-color: #FFA500; color: white;">Overweight: <br>{{
+                                            <ion-card-subtitle style="background-color: #FFA500; color: white;">Overweight:
+                                                <br>{{
                                                     childRemarks.Overweight
                                                 }}</ion-card-subtitle>
                                         </ion-col>
@@ -65,7 +66,30 @@
             </ion-grid>
 
             <ion-card class="ion-margin-bottom">
-                <PieChart :data="data" :options="options" />
+                <ion-card-content>
+                    <h1>Remarks</h1>
+                    <div>
+                        <PieChart :data="remarks_data" :options="options" />
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="ion-margin-bottom">
+                <ion-card-content>
+                    <h1>Age</h1>
+                    <div>
+                        <PieChart :data="age_data" :options="options" />
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="ion-margin-bottom">
+                <ion-card-content>
+                    <h1>Purok</h1>
+                    <div>
+                        <PieChart :data="purok_data" :options="options" />
+                    </div>
+                </ion-card-content>
             </ion-card>
 
             <ion-button @click="fetchChildRemarks(), fetchChildCount()">Refresh Data</ion-button>
@@ -132,8 +156,28 @@ export default defineComponent({
             childCount: "",
             childRemarks: {},
             countTotalRemarks: 0,
-            data: {
-                labels: ['Underweight %', 'Normal %', 'Overweight %', 'Obese %'],
+            remarks_data: {
+                labels: ['Underweight (%)', 'Normal (%)', 'Overweight (%)', 'Obese (%)'],
+                datasets: [
+                    {
+                        backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
+                        data: [0]
+                    }
+                ]
+            },
+            age_data: {
+                labels: ['1 Year Old', '2 Years Old', '3 Years Old', '4 Years Old', '5 Years Old', '6 Years Old',
+                    '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
+                datasets: [
+                    {
+                        backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
+                        data: [0]
+                    }
+                ]
+            },
+            purok_data: {
+                labels: ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6',
+                    'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10', 'Purok 11', 'Purok 12'],
                 datasets: [
                     {
                         backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
@@ -143,102 +187,127 @@ export default defineComponent({
             },
             options: {
                 plugins: {
-                    legend: {display: false}
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false
+                    legend: { display: false }
                 },
-                header_row: [
-                    {
-                        value: 'Name',
-                        fontWeight: 'bold'
-                    },
-                    {
-                        value: 'Date of Birth',
-                        fontWeight: 'bold'
-                    },
-                    {
-                        value: 'Cost',
-                        fontWeight: 'bold'
-                    },
-                    {
-                        value: 'Paid',
-                        fontWeight: 'bold'
-                    }
-                ],
-                data_row: [
-                    {
-                        type: String,
-                        value: 'John Smith'
-                    },
-                    {
-                        type: Date,
-                        value: new Date(),
-                        format: 'mm/dd/yyyy'
-                    },
-                    {
-                        type: Number,
-                        value: 1800
-                    },
-                    {
-                        type: Boolean,
-                        value: true
-                    }
-                ]
-            }
-        },
-            methods: {
-            setOpen(isOpen: boolean) {
-                this.isOpen = isOpen;
+                responsive: true,
+                maintainAspectRatio: false
             },
-            fetchChildRemarks() {
-                api('/child/remarks/')
-                    .then((response) => response.data)
-                    .then((data) => {
-                        console.log(data)
-                        this.childRemarks = data
-                        this.data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
-                        // console.log(this.data)
-                    })
-            },
-            fetchChildCount() {
-                api('/child/count')
-                    .then((response) => response.data)
-                    .then((data) => {
-                        this.childCount = data
-                    })
-            },
-            fetchChildData() {
-                api('/child/data')
-            },
-            handleRefresh(event: any) {
-                setTimeout(() => {
-                    // Any calls to load data go here
-                    this.fetchChildRemarks()
-                    this.fetchChildCount()
-
-                    event.target.complete();
-                }, 1000);
-            },
-        async generateReport() {
-                this.fetchChildData()
-            }
-        },
-        ionViewDidEnter() {
-            this.fetchChildRemarks()
-            this.fetchChildCount()
-        },
-        watch: {
-            $route() {
-                this.$nextTick(this.fetchChildCount);
-            }
+            header_row: [
+                {
+                    value: 'Name',
+                    fontWeight: 'bold'
+                },
+                {
+                    value: 'Date of Birth',
+                    fontWeight: 'bold'
+                },
+                {
+                    value: 'Cost',
+                    fontWeight: 'bold'
+                },
+                {
+                    value: 'Paid',
+                    fontWeight: 'bold'
+                }
+            ],
+            data_row: [
+                {
+                    type: String,
+                    value: 'John Smith'
+                },
+                {
+                    type: Date,
+                    value: new Date(),
+                    format: 'mm/dd/yyyy'
+                },
+                {
+                    type: Number,
+                    value: 1800
+                },
+                {
+                    type: Boolean,
+                    value: true
+                }
+            ]
         }
-    });
+    },
+    methods: {
+        setOpen(isOpen: boolean) {
+            this.isOpen = isOpen;
+        },
+        fetchChildRemarks() {
+            api('/child/remarks/')
+                .then((response) => response.data)
+                .then((data) => {
+                    // console.log(data)
+                    this.childRemarks = data
+                    this.remarks_data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
+                    // console.log(this.data)
+                })
+        },
+        fetchChildCount() {
+            api('/child/count')
+                .then((response) => response.data)
+                .then((data) => {
+                    this.childCount = data
+                })
+        },
+        fetchChildData() {
+            api('/child/data')
+                .then((response) => response.data)
+                .then((data) => {
+                    this.childRemarks = data
+                    this.remarks_data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
+                })
+        },
+        fetchChildAge() {
+            api('/child/age')
+                .then((response) => response.data)
+                .then((data) => {
+                    console.log(data)
+                    this.age_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
+                    data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
+                })
+        },
+        fetchChildPurok() {
+            api('/child/purok')
+                .then((response) => response.data)
+                .then((data) => {
+                    console.log(data)
+                    this.purok_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
+                    data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
+                })
+        },
+        handleRefresh(event: any) {
+            setTimeout(() => {
+                // Any calls to load data go here
+                this.fetchChildRemarks()
+                this.fetchChildCount()
+
+                event.target.complete();
+            }, 1000);
+        },
+        async generateReport() {
+            this.fetchChildData()
+        }
+    },
+    ionViewDidEnter() {
+        this.fetchChildRemarks()
+        this.fetchChildCount()
+        this.fetchChildAge()
+        this.fetchChildPurok()
+    },
+    watch: {
+        $route() {
+            this.$nextTick(this.fetchChildCount);
+        }
+    }
+});
 </script>
 
 <style scoped>
 ion-content {
-  --background: var(--ion-color-light);
+    --background: var(--ion-color-light);
 }
 
 #app-info {
@@ -266,8 +335,8 @@ ion-col>ion-card:nth-child(odd) {
     font-size: 15px;
 }
 
-.remark ion-col{
-/* padding: 5px; */
+.remark ion-col {
+    /* padding: 5px; */
     margin: 0;
     display: block;
     height: 100%;
