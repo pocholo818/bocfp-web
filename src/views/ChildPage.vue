@@ -27,6 +27,7 @@
             <ion-select-option value="male">Male</ion-select-option>
             <ion-select-option value="female">Female</ion-select-option>
             <ion-select-option value="age">Age</ion-select-option>
+            <ion-select-option value="purok">Purok</ion-select-option>
             <ion-select-option value="underweight">Underweight</ion-select-option>
             <ion-select-option value="normal">Normal</ion-select-option>
             <ion-select-option value="overweight">Overweight</ion-select-option>
@@ -60,6 +61,9 @@
                     <ion-card-subtitle>ID: {{ child.id }}</ion-card-subtitle>
                     <div v-if="child.age">
                       <ion-card-subtitle>Age: {{ child.age }}</ion-card-subtitle>
+                    </div>
+                    <div v-else-if="child.purok">
+                      <ion-card-subtitle>Purok: {{ child.purok }}</ion-card-subtitle>
                     </div>
                   </ion-card-header>
 

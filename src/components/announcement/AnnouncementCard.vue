@@ -3,7 +3,7 @@
     <ion-card-header>
       <ion-card-title>{{ title }}</ion-card-title>
       <ion-card-subtitle>{{ date.split("T")[0] }}</ion-card-subtitle>
-      <ion-card-subtitle>Posted By:{{ fname }}  {{ lname }}</ion-card-subtitle>
+      <ion-card-subtitle>Posted By: {{ fname }}  {{ lname }}</ion-card-subtitle>
 
       <div id="actions" v-if="admin_power === '1'">
         <ion-button color="warning" @click="openEditAnnouncementModal()">
