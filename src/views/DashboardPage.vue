@@ -3,7 +3,7 @@
         <HeaderBar title="Dashboard" />
 
         <!-- content -->
-        <ion-content class="ion-padding">
+        <ion-content :fullscreen="true" class="ion-padding">
 
             <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
@@ -91,10 +91,15 @@
                     </div>
                 </ion-card-content>
             </ion-card>
-
-            <ion-button @click="fetchChildRemarks(), fetchChildCount()">Refresh Data</ion-button>
-            <ion-button href="https://bocfp.com:8080/child/data">Generate Report</ion-button>
         </ion-content>
+
+        <ion-footer class="ion-no-border ion-padding" style="padding-bottom: 6px; padding-top: 0;">
+            <ion-toolbar color="none">
+                <ion-button @click="fetchChildRemarks(), fetchChildCount(),
+                    fetchChildPurok(), fetchChildAge()">Refresh Data</ion-button>
+                <ion-button router-link="/report">Generate Report</ion-button>
+            </ion-toolbar>
+        </ion-footer>
 
     </ion-page>
 </template>
@@ -123,10 +128,11 @@ import {
 } from 'ionicons/icons';
 import HeaderBar from '@/components/HeaderBar.vue';
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend)
-import PieChart from '@/components/PieChart.vue'
+import PieChart from '@/components/PieChart.vue';
 import { instance as api } from "@/network/Network";
+import moment from 'moment';
 
 export default defineComponent({
     name: 'ChildPage',

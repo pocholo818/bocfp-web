@@ -10,7 +10,7 @@
       <div style="max-width: 800px; margin: auto;">
 
         <ion-searchbar class="ion-margin-bottom" v-model="search"></ion-searchbar>
-        
+
         <!-- search filter -->
         <ion-item class="dropdown ion-margin-bottom" lines="none" v-if="admin_power === '1'">
           <ion-select @ionChange="searchData" v-model="annouFilter" placeholder="Select Filter">
@@ -29,23 +29,22 @@
 
         <!-- <template> -->
         <!-- <ion-list> -->
-          <template v-if="annou.message">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-subtitle style="text-align: center;">{{ annou.message }}</ion-card-subtitle>
-              </ion-card-header>
-            </ion-card>
-          </template>
+        <template v-if="annou.message">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle style="text-align: center;">{{ annou.message }}</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </template>
 
-          <template v-else>
-            <TransitionGroup name="fade">
-              <AnnouncementCard v-for="annous in annou" :title="annous.title" :content="annous.content"
-                :date="format_date(annous.date)" :user_id="annous.user_id" :admin_power="admin_power" :annou_id="annous.annou_id" 
-                :fname="annous.fname" :lname="annous.lname" :key="annous.annou_id"
-                :soft_delete="annous.soft_delete"
-                @update-announcement-list="fetchData()" />
-            </TransitionGroup>
-          </template>
+        <template v-else>
+          <TransitionGroup name="fade">
+            <AnnouncementCard v-for="annous in annou" :title="annous.title" :content="annous.content"
+              :date="format_date(annous.date)" :user_id="annous.user_id" :admin_power="admin_power"
+              :annou_id="annous.annou_id" :fname="annous.fname" :lname="annous.lname" :key="annous.annou_id"
+              :soft_delete="annous.soft_delete" @update-announcement-list="fetchData()" />
+          </TransitionGroup>
+        </template>
 
 
         <!-- </ion-list> -->
@@ -89,7 +88,7 @@ import {
 import HeaderBar from '@/components/HeaderBar.vue';
 import AnnouncementCard from '@/components/announcement/AnnouncementCard.vue'
 import PostEditAnnouncementModal from '@/components/announcement/PostEditAnnouncementModal.vue'
-import moment from 'moment'
+import moment from 'moment';
 // icons
 import {
   addOutline, createOutline, trashOutline
@@ -145,7 +144,7 @@ export default defineComponent({
       admin_power: ""
     };
   },
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.admin_power = localStorage.getItem('admin_power') || ''
     this.fetchData()
     this.user_id = localStorage.getItem('user_id') || ''
