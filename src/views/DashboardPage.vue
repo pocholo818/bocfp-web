@@ -270,7 +270,7 @@ export default defineComponent({
             api('/child/age')
                 .then((response) => response.data)
                 .then((data) => {
-                    console.log(data)
+                    // console.log(data)
                     this.age_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
                     data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
                 })
@@ -279,7 +279,7 @@ export default defineComponent({
             api('/child/purok')
                 .then((response) => response.data)
                 .then((data) => {
-                    console.log(data)
+                    // console.log(data)
                     this.purok_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
                     data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
                 })

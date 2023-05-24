@@ -32,13 +32,34 @@
                                     style="background-color: var(--ion-color-primary); color: white" :max="currentDate" />
                             </ion-item>
 
+                            <!-- <ion-item>
+                                <ion-label>Get History by:</ion-label>
+                                <ion-toggle v-model="historyToggle">Default Toggle</ion-toggle>
+
+                                <input type="number" v-model="reportDetails.history" @keypress="numOnly($event)"
+                                    :disabled="!historyToggle"
+                                    style="background-color: var(--ion-color-primary); color: white" placeholder="YYYY"
+                                    min="2020" :max="currentYear">
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label>History Filter: </ion-label>
+
+                                <ion-select v-model="reportDetails.historyFilter" :disabled="!historyToggle">
+                                    <ion-select-option value="all">All</ion-select-option>
+                                    <ion-select-option value="annual">Anually</ion-select-option>
+                                    <ion-select-option value="quarter">Quarterly</ion-select-option>
+                                </ion-select>
+                            </ion-item> -->
+
                         </ion-list>
                     </ion-card-content>
                 </ion-card>
 
                 <!-- Save -->
-                <ion-button expand="block"
-                    :href="`https://localhost.com:5000/report?from=${reportDetails.from}&to=${reportDetails.to}`">Save</ion-button><br><br><br>
+                <!-- <ion-button expand="block"
+                    :href="`https://localhost.com:5000/report?from=${reportDetails.from}&to=${reportDetails.to}`">Save</ion-button><br><br><br> -->
+                <ion-button expand="block" @click="test">Save</ion-button><br><br><br>
             </ion-content>
 
         </ion-content>
@@ -46,7 +67,7 @@
 </template>
     
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, readonly } from 'vue';
 // icons
 import {
     eyeOutline,
@@ -63,12 +84,13 @@ import {
     IonButtons, IonHeader, IonToolbar,
     IonDatetime, IonDatetimeButton, IonModal,
     IonItem,
-    // IonSelect, IonSelectOption, 
+    // IonSelect, IonSelectOption,
     toastController,
     useIonRouter,
     IonCardHeader,
     IonCardTitle,
-    modalController
+    modalController,
+    // IonToggle,
 
 } from '@ionic/vue';
 import CropModal from '@/components/CropModal.vue'
@@ -90,14 +112,18 @@ export default defineComponent({
         IonItem,
         // IonSelect, IonSelectOption,
         IonCardHeader,
-        IonCardTitle
+        IonCardTitle,
+        // IonToggle,
     },
     data() {
         return {
             reportDetails: {
                 to: "",
-                from: ""
+                from: "",
+                history: "",
+                historyFilter: ""
             },
+            historyToggle: false
         }
     },
     setup() {
@@ -142,11 +168,30 @@ export default defineComponent({
             }
 
             await toast.present();
+        },
+        numOnly(evt: KeyboardEvent): void {
+            const keysAllowed: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+            const keyPressed: string = evt.key;
+
+            if (!keysAllowed.includes(keyPressed)) {
+                evt.preventDefault()
+            }
+        },
+        test() {
+            console.log(this.reportDetails)
         }
+        // historyToggle() {
+        //     if (this.historyToggle == true) {
+
+        //     }
+        // }
     },
     computed: {
         currentDate() {
             return moment().format('YYYY-MM-DD');
+        },
+        currentYear() {
+            return moment().format('YYYY');
         }
     }
 });
