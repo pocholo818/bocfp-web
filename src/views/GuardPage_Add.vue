@@ -44,6 +44,12 @@
                 <ion-label position="floating">Address:</ion-label>
                 <ion-input type="text" placeholder="Enter Address" v-model="guardianDetails.address"></ion-input>
               </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Purok:</ion-label>
+                <ion-input type="text" @keypress="numOnly($event)" maxlength="2" placeholder="Enter Purok"
+                  v-model="guardianDetails.purok"></ion-input>
+              </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
@@ -106,7 +112,8 @@ export default defineComponent({
         lname: "",
         contact: "",
         household_id: "",
-        address: ""
+        address: "",
+        purok: ""
       },
     }
   },
@@ -131,9 +138,9 @@ export default defineComponent({
 
       // check if inputs r empty
       if (this.guardianDetails.fname && this.guardianDetails.lname && this.guardianDetails.contact
-        && this.guardianDetails.address && this.guardianDetails.household_id) {
-          
-          api.post('/guardian', data)
+        && this.guardianDetails.address && this.guardianDetails.household_id && this.guardianDetails.purok) {
+
+        api.post('/guardian', data)
           .then(response => response.data)
           .then((data) => {
             toast.message = 'Success!'
@@ -142,7 +149,8 @@ export default defineComponent({
               lname: "",
               contact: "",
               household_id: "",
-              address: ""
+              address: "",
+              purok: ""
             }
             this.router.push("/guardian");
           })
@@ -178,6 +186,4 @@ export default defineComponent({
 </script>
   
 
-<style scoped>
-
-</style>
+<style scoped></style>
