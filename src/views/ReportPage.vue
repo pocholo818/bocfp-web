@@ -53,7 +53,7 @@
                                                             <ion-label>From</ion-label>
                                                             <input type="date" v-model="childrenRecords.from"
                                                                 style="background-color: var(--ion-color-primary); color: white"
-                                                                :max="currentDate" />
+                                                                :max="currentDate" @change="includeChildrenRecords" />
                                                         </ion-item>
                                                     </ion-col>
                                                     <ion-col>
@@ -61,7 +61,7 @@
                                                             <ion-label>To</ion-label>
                                                             <input type="date" v-model="childrenRecords.to"
                                                                 style="background-color: var(--ion-color-primary); color: white"
-                                                                :max="currentDate" />
+                                                                :max="currentDate" @change="includeChildrenRecords" />
                                                         </ion-item>
                                                     </ion-col>
                                                 </ion-row>
@@ -100,13 +100,14 @@
                                 <ion-accordion value="first">
                                     <ion-item slot="header">
                                         <ion-label>Children Records by Remarks</ion-label>
-                                        <ion-toggle @ion-change="includeChildrenRecordsRemarks"></ion-toggle>
+                                        <ion-toggle @ion-change="includeChildrenRecordsRemark"></ion-toggle>
                                     </ion-item>
                                     <div slot="content" class="ion-padding-start ion-padding-end">
                                         <ion-list>
                                             <ion-label>Remark</ion-label>
                                             <ion-item class="dropdown ion-margin-bottom" lines="none">
-                                                <ion-select placeholder="Select Remark" v-model="childrenRemark">
+                                                <ion-select placeholder="Select Remark" v-model="childrenRemark"
+                                                    @ionChange="includeChildrenRecordsRemark">
                                                     <ion-select-option value="underweight">Underweight</ion-select-option>
                                                     <ion-select-option value="normal">Normal</ion-select-option>
                                                     <ion-select-option value="overweight">Overweight</ion-select-option>
@@ -127,7 +128,8 @@
                                     <div slot="content" class="ion-padding-start ion-padding-end">
                                         <ion-list>
                                             <ion-item class="dropdown ion-margin-bottom" lines="none">
-                                                <ion-select placeholder="Select Purok" v-model="childrenPurok">
+                                                <ion-select placeholder="Select Purok" v-model="childrenPurok"
+                                                    @ionChange="includeChildrenRecordsPurok">
                                                     <ion-select-option value="1">1</ion-select-option>
                                                     <ion-select-option value="2">2</ion-select-option>
                                                     <ion-select-option value="3">3</ion-select-option>
@@ -152,9 +154,8 @@
                 </ion-card>
 
                 <!-- Save -->
-                <!-- <ion-button expand="block"
-                    :href="`https://localhost.com:5000/report?from=${reportDetails.from}&to=${reportDetails.to}`">Save</ion-button><br><br><br> -->
-                <ion-button expand="block" @click="test">Save</ion-button><br><br><br>
+                <!-- <ion-button expand="block" @click="test">Save</ion-button><br><br><br> -->
+                <ion-button expand="block" @click="test()">Save</ion-button><br><br><br>
             </ion-content>
 
         </ion-content>
@@ -225,6 +226,10 @@ export default defineComponent({
     },
     data() {
         return {
+            downloadReportHref: "http://localhost:5000/report?",
+            childrenRecordsHref: "",
+            childrenRemarkHref: "",
+            childrenPurokHref: "",
             childrenRecords: {
                 to: "",
                 from: "",
@@ -262,41 +267,55 @@ export default defineComponent({
         includeChildrenList(event: any) {
             if (event.detail.checked) {
                 this.reportDetails.push('childrenList')
+                this.downloadReportHref += "childrenList=true&"
             }
             else {
-                this.reportDetails.splice(this.reportDetails.indexOf('childrenList'), 1)
+                this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenList'), -1)
+                this.downloadReportHref = this.downloadReportHref.replace("childrenList=true&", "")
             }
         },
         includeLatestRecord(event: any) {
             if (event.detail.checked) {
                 this.reportDetails.push('latestRecord')
+                this.downloadReportHref += "latestRecord=true&"
             }
             else {
-                this.reportDetails.splice(this.reportDetails.indexOf('latestRecord'), 1)
+                this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('latestRecord'), -1)
+                this.downloadReportHref = this.downloadReportHref.replace("latestRecord=true&", "")
             }
         },
         includeChildrenRecords(event: any) {
-            if (event.detail.checked) {
+            if (event.target.value || event.detail.checked) {
                 this.reportDetails.push('childrenRecords')
+                if (this.selectedTab === 'specificDateRange')
+                    this.childrenRecordsHref = `childrenRecords=true&from=${this.childrenRecords.from}&to=${this.childrenRecords.to}&`
+                else if (this.selectedTab === 'history')
+                    this.childrenRecordsHref = `childrenRecords=true&year=${this.childrenRecords.year}&filter=${this.childrenRecords.filter}&`
             }
-            else {
-                this.reportDetails.splice(this.reportDetails.indexOf('childrenRecords'), 1)
+            if (event.target.localName === 'ion-toggle' && event.detail.checked === false) {
+
+                this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenRecords'), -1)
+                this.childrenRecordsHref = ""
             }
         },
-        includeChildrenRecordsRemarks(event: any) {
+        includeChildrenRecordsRemark(event: any) {
             if (event.detail.checked) {
                 this.reportDetails.push('childrenRemark')
+                this.childrenRemarkHref = `childrenRemark=${this.childrenRemark}&`
             }
             else {
-                this.reportDetails.splice(this.reportDetails.indexOf('childrenRemark'), 1)
+                this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenRemark'), -1)
+                this.childrenRemarkHref = ""
             }
         },
         includeChildrenRecordsPurok(event: any) {
             if (event.detail.checked) {
                 this.reportDetails.push('childrenPurok')
+                this.childrenPurokHref = `childrenPurok=${this.childrenPurok}&`
             }
             else {
-                this.reportDetails.splice(this.reportDetails.indexOf('childrenPurok'), 1)
+                this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenPurok'), -1)
+                this.childrenPurokHref = ""
             }
         },
         checkFromTo() {
@@ -309,86 +328,16 @@ export default defineComponent({
         async test() {
             const toast = await toastController.create({
                 duration: 1500,
-                message: 'Please toggle any options.',
                 position: 'top'
             })
 
-            let body = {};
-
-            if (this.reportDetails.indexOf('childrenList') !== -1) {
-                body = {
-                    ...body,
-                    childrenList: true
-                }
+            if (this.reportDetails.length) {
+                window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurok + this.childrenRecordsHref, "_self")
             }
-            if (this.reportDetails.indexOf('latestRecord') !== -1) {
-                body = {
-                    ...body,
-                    latestRecord: true
-                }
+            else {
+                toast.message = 'Please select any toggle'
+                await toast.present();
             }
-            if (this.reportDetails.indexOf('childrenRecords') !== -1) {
-                if (this.checkFromTo() === false) {
-                    toast.message = 'Invalid Date'
-                    await toast.present()
-                    return
-                }
-                if (this.childrenRecords.year > parseInt(moment().format('YYYY'))) {
-                    toast.message = 'Invalid Year'
-                    await toast.present()
-                    return
-                }
-
-                if (this.selectedTab === 'specificDateRange') {
-                    body = {
-                        ...body,
-                        childrenRecords: {
-                            value: "specificDateRange",
-                            from: this.childrenRecords.from,
-                            to: this.childrenRecords.to,
-                        }
-                    }
-                }
-                else if (this.selectedTab === 'history') {
-                    body = {
-                        ...body,
-                        childrenRecords: {
-                            value: "history",
-                            year: this.childrenRecords.year,
-                            filter: this.childrenRecords.filter,
-                        }
-                    }
-                }
-            }
-            if (this.reportDetails.indexOf('childrenRemark') !== -1) {
-                body = {
-                    ...body,
-                    childrenRemark: this.childrenRemark
-                }
-            }
-            if (this.reportDetails.indexOf('childrenPurok') !== -1) {
-                body = {
-                    ...body,
-                    childrenPurok: this.childrenPurok
-                }
-            }
-
-            api.post('/report', body)
-                .then(response => response.data)
-                .then((data) => {
-                    toast.message = 'Success!'
-                    console.log("test:", data)
-                    // this.reportDetails = {
-                    //     from: "",
-                    //     to: ""
-                    // }
-                    // this.router.push("/dashboard");
-                })
-                .catch((error) => {
-                    toast.message = error
-                });
-
-            await toast.present()
         }
     },
     computed: {
