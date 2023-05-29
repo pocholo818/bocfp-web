@@ -40,9 +40,9 @@
                                             <ion-segment-button value="specificDateRange">
                                                 <ion-label>Specific Date Range</ion-label>
                                             </ion-segment-button>
-                                            <ion-segment-button value="history">
+                                            <!-- <ion-segment-button value="history">
                                                 <ion-label>History</ion-label>
-                                            </ion-segment-button>
+                                            </ion-segment-button> -->
                                         </ion-segment>
 
                                         <ion-list v-if="selectedTab === 'specificDateRange'">
@@ -69,7 +69,7 @@
                                         </ion-list>
 
                                         <!-- TODO -->
-                                        <ion-list v-else-if="selectedTab === 'history'">
+                                        <!-- <ion-list v-else-if="selectedTab === 'history'">
                                             <ion-item>
                                                 <ion-label>Get History by:</ion-label>
 
@@ -83,9 +83,64 @@
                                                 <ion-label>History Filter: </ion-label>
 
                                                 <ion-select v-model="childrenRecords.filter">
-                                                    <ion-select-option value="annual">Annually</ion-select-option>
-                                                    <ion-select-option value="quarter">Quarterly</ion-select-option>
+                                                    <ion-select-option value="annually">Annually</ion-select-option>
+                                                    <ion-select-option
+                                                        value="semi-annually">Semi-Annually</ion-select-option>
+                                                    <ion-select-option value="quarterly">Quarterly</ion-select-option>
                                                     <ion-select-option value="monthly">Monthly</ion-select-option>
+                                                </ion-select>
+                                            </ion-item>
+                                        </ion-list> -->
+                                    </div>
+                                </ion-accordion>
+                            </ion-accordion-group>
+
+                            <ion-accordion-group>
+
+                                <ion-accordion value="first">
+                                    <ion-item slot="header">
+                                        <ion-label>Children Records by Remarks</ion-label>
+                                        <ion-toggle @ion-change="includeChildrenRecordsRemarks"></ion-toggle>
+                                    </ion-item>
+                                    <div slot="content" class="ion-padding-start ion-padding-end">
+                                        <ion-list>
+                                            <ion-label>Remark</ion-label>
+                                            <ion-item class="dropdown ion-margin-bottom" lines="none">
+                                                <ion-select placeholder="Select Remark" v-model="childrenRemark">
+                                                    <ion-select-option value="underweight">Underweight</ion-select-option>
+                                                    <ion-select-option value="normal">Normal</ion-select-option>
+                                                    <ion-select-option value="overweight">Overweight</ion-select-option>
+                                                    <ion-select-option value="obese">Obese</ion-select-option>
+                                                </ion-select>
+                                            </ion-item>
+                                        </ion-list>
+                                    </div>
+                                </ion-accordion>
+                            </ion-accordion-group>
+
+                            <ion-accordion-group>
+                                <ion-accordion value="first">
+                                    <ion-item slot="header">
+                                        <ion-label>Children Records by Purok</ion-label>
+                                        <ion-toggle @ion-change="includeChildrenRecordsPurok"></ion-toggle>
+                                    </ion-item>
+                                    <div slot="content" class="ion-padding-start ion-padding-end">
+                                        <ion-list>
+                                            <ion-item class="dropdown ion-margin-bottom" lines="none">
+                                                <ion-select placeholder="Select Purok" v-model="childrenPurok">
+                                                    <ion-select-option value="1">1</ion-select-option>
+                                                    <ion-select-option value="2">2</ion-select-option>
+                                                    <ion-select-option value="3">3</ion-select-option>
+                                                    <ion-select-option value="4">4</ion-select-option>
+                                                    <ion-select-option value="5">5</ion-select-option>
+                                                    <ion-select-option value="6">6</ion-select-option>
+                                                    <ion-select-option value="7">7</ion-select-option>
+                                                    <ion-select-option value="8">8</ion-select-option>
+                                                    <ion-select-option value="9">9</ion-select-option>
+                                                    <ion-select-option value="10">10</ion-select-option>
+                                                    <ion-select-option value="11">11</ion-select-option>
+                                                    <ion-select-option value="12">12</ion-select-option>
+                                                    <ion-select-option value="13">13</ion-select-option>
                                                 </ion-select>
                                             </ion-item>
                                         </ion-list>
@@ -176,6 +231,8 @@ export default defineComponent({
                 year: 2020,
                 filter: ""
             },
+            childrenRemark: "",
+            childrenPurok: "",
             reportDetails: [] as string[],
             selectedTab: 'specificDateRange',
         }
@@ -226,6 +283,22 @@ export default defineComponent({
                 this.reportDetails.splice(this.reportDetails.indexOf('childrenRecords'), 1)
             }
         },
+        includeChildrenRecordsRemarks(event: any) {
+            if (event.detail.checked) {
+                this.reportDetails.push('childrenRemark')
+            }
+            else {
+                this.reportDetails.splice(this.reportDetails.indexOf('childrenRemark'), 1)
+            }
+        },
+        includeChildrenRecordsPurok(event: any) {
+            if (event.detail.checked) {
+                this.reportDetails.push('childrenPurok')
+            }
+            else {
+                this.reportDetails.splice(this.reportDetails.indexOf('childrenPurok'), 1)
+            }
+        },
         checkFromTo() {
             let from = moment(this.childrenRecords.from)
             let to = moment(this.childrenRecords.to)
@@ -270,6 +343,7 @@ export default defineComponent({
                     body = {
                         ...body,
                         childrenRecords: {
+                            value: "specificDateRange",
                             from: this.childrenRecords.from,
                             to: this.childrenRecords.to,
                         }
@@ -279,28 +353,40 @@ export default defineComponent({
                     body = {
                         ...body,
                         childrenRecords: {
+                            value: "history",
                             year: this.childrenRecords.year,
                             filter: this.childrenRecords.filter,
                         }
                     }
                 }
             }
+            if (this.reportDetails.indexOf('childrenRemark') !== -1) {
+                body = {
+                    ...body,
+                    childrenRemark: this.childrenRemark
+                }
+            }
+            if (this.reportDetails.indexOf('childrenPurok') !== -1) {
+                body = {
+                    ...body,
+                    childrenPurok: this.childrenPurok
+                }
+            }
 
-            console.log(body);
-
-            // api.post('/report', body)
-            //     .then(response => response.data)
-            //     .then((data) => {
-            //         toast.message = 'Success!'
-            //         // this.reportDetails = {
-            //         //     from: "",
-            //         //     to: ""
-            //         // }
-            //         // this.router.push("/dashboard");
-            //     })
-            //     .catch((error) => {
-            //         toast.message = 'error'
-            //     });
+            api.post('/report', body)
+                .then(response => response.data)
+                .then((data) => {
+                    toast.message = 'Success!'
+                    console.log("test:", data)
+                    // this.reportDetails = {
+                    //     from: "",
+                    //     to: ""
+                    // }
+                    // this.router.push("/dashboard");
+                })
+                .catch((error) => {
+                    toast.message = error
+                });
 
             await toast.present()
         }
