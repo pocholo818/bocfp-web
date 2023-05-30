@@ -292,28 +292,27 @@ export default defineComponent({
                 else if (this.selectedTab === 'history')
                     this.childrenRecordsHref = `childrenRecords=true&year=${this.childrenRecords.year}&filter=${this.childrenRecords.filter}&`
             }
-            if (event.target.localName === 'ion-toggle' && event.detail.checked === false) {
-
+            if (event.target.localName === 'ion-toggle' && !event.detail.checked) {
                 this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenRecords'), -1)
                 this.childrenRecordsHref = ""
             }
         },
         includeChildrenRecordsRemark(event: any) {
-            if (event.detail.checked) {
+            if (event.target.value || event.detail.checked) {
                 this.reportDetails.push('childrenRemark')
                 this.childrenRemarkHref = `childrenRemark=${this.childrenRemark}&`
             }
-            else {
+            if (event.target.localName === 'ion-toggle' && !event.detail.checked) {
                 this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenRemark'), -1)
                 this.childrenRemarkHref = ""
             }
         },
         includeChildrenRecordsPurok(event: any) {
-            if (event.detail.checked) {
+            if (event.target.value || event.detail.checked) {
                 this.reportDetails.push('childrenPurok')
                 this.childrenPurokHref = `childrenPurok=${this.childrenPurok}&`
             }
-            else {
+            if (event.target.localName === 'ion-toggle' && !event.detail.checked) {
                 this.reportDetails = this.reportDetails.splice(this.reportDetails.indexOf('childrenPurok'), -1)
                 this.childrenPurokHref = ""
             }
@@ -332,7 +331,8 @@ export default defineComponent({
             })
 
             if (this.reportDetails.length) {
-                window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurok + this.childrenRecordsHref, "_self")
+                // console.log(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref)
+                window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref, "_self")
             }
             else {
                 toast.message = 'Please select any toggle'
