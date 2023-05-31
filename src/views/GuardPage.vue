@@ -135,7 +135,7 @@ export default defineComponent({
             guardianList: [],
             guardianDel: "",
             search: "",
-            limit: 10,
+            limit: 5,
             offset: 0,
             guardFilter: "all",
             isNextEnabled: true,
@@ -149,7 +149,7 @@ export default defineComponent({
         searchData() {
             const search = this.search.trim()
 
-            this.limit = 5
+            // this.limit = 10
             this.offset = 0
 
             if (search.length) {
@@ -224,7 +224,7 @@ export default defineComponent({
 
 <style scoped>
 ion-content {
-  --background: var(--ion-color-light);
+    --background: var(--ion-color-light);
 }
 
 ion-button {

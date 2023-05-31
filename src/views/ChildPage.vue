@@ -74,7 +74,8 @@
                     <ion-button v-if="child.soft_delete === 0" color="danger" @click.prevent="child_delete(child.id)">
                       <ion-icon :icon="trashOutline"></ion-icon><span class="hide-on-mobile">&nbsp;Delete</span>
                     </ion-button>
-                    <ion-button v-else color="success" @click.prevent="child_undo(child.id)"><ion-icon :icon="arrowUndoOutline">
+                    <ion-button v-else color="success" @click.prevent="child_undo(child.id)"><ion-icon
+                        :icon="arrowUndoOutline">
                       </ion-icon>&nbsp;
                       Retrieve</ion-button>
                   </div>
@@ -127,9 +128,9 @@ import {
 } from '@ionic/vue';
 // icons
 import {
-  addOutline, 
-  createOutline, 
-  trashOutline, 
+  addOutline,
+  createOutline,
+  trashOutline,
   arrowUndoOutline
 } from 'ionicons/icons';
 import PageButtons from '@/components/PageButtons.vue';
@@ -173,7 +174,7 @@ export default defineComponent({
       isOpen: false,
       childList: { "image": "" },
       search: "",
-      limit: 10,
+      limit: 5,
       offset: 0,
       isNextEnabled: true,
       childFilter: "all",
@@ -184,7 +185,7 @@ export default defineComponent({
     searchData() {
       let search = this.search.trim()
 
-      this.limit = 10
+      // this.limit = 10
       this.offset = 0
 
       if (search.length) {
@@ -286,7 +287,7 @@ export default defineComponent({
               })
 
               const childId = id
-                api.put('/child/del/' + childId)
+              api.put('/child/del/' + childId)
                 .then((data) => {
                   toast.message = 'Success!'
                   this.$emit('deleted')
@@ -322,7 +323,7 @@ export default defineComponent({
               })
 
               const childId = id
-                api.put('/child/ret/' + childId)
+              api.put('/child/ret/' + childId)
                 .then((data) => {
                   toast.message = 'Success!'
                 })
