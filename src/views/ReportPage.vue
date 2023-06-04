@@ -100,7 +100,7 @@
 
                                 <ion-accordion value="first">
                                     <ion-item slot="header">
-                                        <ion-label>Children Records by Remarks</ion-label>
+                                        <ion-label>Children Records by Remark</ion-label>
                                         <ion-toggle @ion-change="includeChildrenRecordsRemark"></ion-toggle>
                                     </ion-item>
                                     <div slot="content" class="ion-padding-start ion-padding-end">
@@ -156,7 +156,7 @@
 
                 <!-- Save -->
                 <!-- <ion-button expand="block" @click="test">Save</ion-button><br><br><br> -->
-                <ion-button expand="block" @click="test()" :disabled="isSaveDisabled">Save</ion-button><br><br><br>
+                <ion-button expand="block" @click="test()" :disabled="isSaveDisabled">Download</ion-button><br><br><br>
             </ion-content>
 
         </ion-content>
@@ -256,32 +256,32 @@ export default defineComponent({
     },
     created() {
         watchEffect(() => {
-            if (this.reportDetails.indexOf('childrenRecords') !== -1) {
-                if ((this.childrenRecords.from.length && this.childrenRecords.to.length) ||
-                    (this.childrenRecords.year >= 2020 && this.childrenRecords.filter.length)) {
-                    this.isSaveDisabled = false
+            let errors = 0
+
+            if (this.reportDetails.length) {
+                // TODO: enable download button when children records is untoggled
+                if (this.reportDetails.indexOf('childrenRecords') !== -1) {
+                    if (!((this.childrenRecords.from.length && this.childrenRecords.to.length) ||
+                        (this.childrenRecords.year >= 2020 && this.childrenRecords.filter.length))) {
+                        errors++
+                    }
                 }
-                else {
-                    this.isSaveDisabled = true
+                if (this.reportDetails.indexOf('childrenPurok') !== -1 && !this.childrenPurok.length) {
+                    errors++
                 }
-            }
-            else if (this.reportDetails.indexOf('childrenPurok') !== -1) {
-                if (this.childrenPurok.length)
-                    this.isSaveDisabled = false
-                else
-                    this.isSaveDisabled = true
-            }
-            else if (this.reportDetails.indexOf('childrenRemark') !== -1) {
-                if (this.childrenRemark.length)
-                    this.isSaveDisabled = false
-                else
-                    this.isSaveDisabled = true
-            }
-            else if (this.reportDetails.length) {
-                this.isSaveDisabled = false
+                if (this.reportDetails.indexOf('childrenRemark') !== -1 && !this.childrenRemark.length) {
+                    errors++
+                }
             }
             else {
+                errors++
+            }
+
+            if (errors) {
                 this.isSaveDisabled = true
+            }
+            else {
+                this.isSaveDisabled = false
             }
         })
     },
