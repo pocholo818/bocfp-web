@@ -256,8 +256,6 @@ export default defineComponent({
     },
     created() {
         watchEffect(() => {
-            console.log(this.childrenRecords)
-
             if (this.reportDetails.indexOf('childrenRecords') !== -1) {
                 if ((this.childrenRecords.from.length && this.childrenRecords.to.length) ||
                     (this.childrenRecords.year >= 2020 && this.childrenRecords.filter.length)) {
