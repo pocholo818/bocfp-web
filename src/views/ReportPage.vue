@@ -374,8 +374,8 @@ export default defineComponent({
             })
 
             if (this.reportDetails.length) {
-                console.log(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref)
-                // window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref, "_self")
+                // console.log(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref)
+                window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref, "_self")
             }
             else {
                 toast.message = 'Please select any toggle'
