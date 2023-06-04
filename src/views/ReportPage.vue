@@ -40,9 +40,9 @@
                                             <ion-segment-button value="specificDateRange">
                                                 <ion-label>Specific Date Range</ion-label>
                                             </ion-segment-button>
-                                            <!-- <ion-segment-button value="history">
+                                            <ion-segment-button value="history">
                                                 <ion-label>History</ion-label>
-                                            </ion-segment-button> -->
+                                            </ion-segment-button>
                                         </ion-segment>
 
                                         <ion-list v-if="selectedTab === 'specificDateRange'">
@@ -69,7 +69,7 @@
                                         </ion-list>
 
                                         <!-- TODO -->
-                                        <!-- <ion-list v-else-if="selectedTab === 'history'">
+                                        <ion-list v-else-if="selectedTab === 'history'">
                                             <ion-item>
                                                 <ion-label>Get History by:</ion-label>
 
@@ -82,7 +82,8 @@
                                             <ion-item>
                                                 <ion-label>History Filter: </ion-label>
 
-                                                <ion-select v-model="childrenRecords.filter">
+                                                <ion-select v-model="childrenRecords.filter"
+                                                    @ionChange="includeChildrenRecords">
                                                     <ion-select-option value="annually">Annually</ion-select-option>
                                                     <ion-select-option
                                                         value="semi-annually">Semi-Annually</ion-select-option>
@@ -90,7 +91,7 @@
                                                     <ion-select-option value="monthly">Monthly</ion-select-option>
                                                 </ion-select>
                                             </ion-item>
-                                        </ion-list> -->
+                                        </ion-list>
                                     </div>
                                 </ion-accordion>
                             </ion-accordion-group>
@@ -107,7 +108,7 @@
                                             <ion-label>Remark</ion-label>
                                             <ion-item class="dropdown ion-margin-bottom" lines="none">
                                                 <ion-select placeholder="Select Remark" v-model="childrenRemark"
-                                                    @ionChange="includeChildrenRecordsRemark">
+                                                    @ion-change="includeChildrenRecordsRemark">
                                                     <ion-select-option value="underweight">Underweight</ion-select-option>
                                                     <ion-select-option value="normal">Normal</ion-select-option>
                                                     <ion-select-option value="overweight">Overweight</ion-select-option>
@@ -155,7 +156,7 @@
 
                 <!-- Save -->
                 <!-- <ion-button expand="block" @click="test">Save</ion-button><br><br><br> -->
-                <ion-button expand="block" @click="test()">Save</ion-button><br><br><br>
+                <ion-button expand="block" @click="test()" :disabled="isSaveDisabled">Save</ion-button><br><br><br>
             </ion-content>
 
         </ion-content>
@@ -163,7 +164,7 @@
 </template>
     
 <script lang="ts">
-import { defineComponent, readonly } from 'vue';
+import { defineComponent, watch, watchEffect } from 'vue';
 // icons
 import {
     eyeOutline,
@@ -240,6 +241,7 @@ export default defineComponent({
             childrenPurok: "",
             reportDetails: [] as string[],
             selectedTab: 'specificDateRange',
+            isSaveDisabled: true
         }
     },
     setup() {
@@ -252,6 +254,39 @@ export default defineComponent({
             router
         }
     },
+    created() {
+        watchEffect(() => {
+            console.log(this.childrenRecords)
+
+            if (this.reportDetails.indexOf('childrenRecords') !== -1) {
+                if ((this.childrenRecords.from.length && this.childrenRecords.to.length) ||
+                    (this.childrenRecords.year >= 2020 && this.childrenRecords.filter.length)) {
+                    this.isSaveDisabled = false
+                }
+                else {
+                    this.isSaveDisabled = true
+                }
+            }
+            else if (this.reportDetails.indexOf('childrenPurok') !== -1) {
+                if (this.childrenPurok.length)
+                    this.isSaveDisabled = false
+                else
+                    this.isSaveDisabled = true
+            }
+            else if (this.reportDetails.indexOf('childrenRemark') !== -1) {
+                if (this.childrenRemark.length)
+                    this.isSaveDisabled = false
+                else
+                    this.isSaveDisabled = true
+            }
+            else if (this.reportDetails.length) {
+                this.isSaveDisabled = false
+            }
+            else {
+                this.isSaveDisabled = true
+            }
+        })
+    },
     methods: {
         numOnly(evt: KeyboardEvent): void {
             const keysAllowed: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
@@ -263,6 +298,16 @@ export default defineComponent({
         },
         onSegmentChange(event: any) {
             this.selectedTab = event.detail.value
+            this.includeChildrenRecords(event)
+
+            if (this.selectedTab === 'specificDateRange') {
+                this.childrenRecords.year = 2020
+                this.childrenRecords.filter = ''
+            }
+            else if (this.selectedTab === 'history') {
+                this.childrenRecords.from = ''
+                this.childrenRecords.to = ''
+            }
         },
         includeChildrenList(event: any) {
             if (event.detail.checked) {
@@ -331,8 +376,8 @@ export default defineComponent({
             })
 
             if (this.reportDetails.length) {
-                // console.log(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref)
-                window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref, "_self")
+                console.log(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref)
+                // window.open(this.downloadReportHref + this.childrenRemarkHref + this.childrenPurokHref + this.childrenRecordsHref, "_self")
             }
             else {
                 toast.message = 'Please select any toggle'
