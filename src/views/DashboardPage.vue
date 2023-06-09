@@ -176,7 +176,7 @@ export default defineComponent({
                     '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
                 datasets: [
                     {
-                        backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
+                        backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#000000', '#40e0d0', '#ff8000', '#0080ff', '#8000ff', '#00ff80'],
                         data: [0]
                     }
                 ]
@@ -186,7 +186,7 @@ export default defineComponent({
                     'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10', 'Purok 11', 'Purok 12'],
                 datasets: [
                     {
-                        backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
+                        backgroundColor: ['#c0392b', '#27ae60', '#2980b9', '#f39c12', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#16a085', '#d35400', '#3498db', '#9b59b6'],
                         data: [0]
                     }
                 ]
