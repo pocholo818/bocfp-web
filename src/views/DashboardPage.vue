@@ -163,7 +163,7 @@ export default defineComponent({
             childRemarks: {},
             countTotalRemarks: 0,
             remarks_data: {
-                labels: ['Underweight (%)', 'Normal (%)', 'Overweight (%)', 'Obese (%)'],
+                labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
                 datasets: [
                     {
                         backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
@@ -192,11 +192,28 @@ export default defineComponent({
                 ]
             },
             options: {
+                // plugins: {
+                //     legend: { display: false }
+                // },
                 plugins: {
-                    legend: { display: false }
+                    legend: {
+                        labels: {
+                        generateLabels: (chart: any) => {
+                            // console.log(chart)
+                            const total = this.childCount;
+                            const datasets = chart.data.datasets;
+                            return datasets[0].data.map((data: any, i: any, total: any) => ({
+                            text: `${chart.data.labels[i]} - ${data}(${data/Number(this.childCount)*100}%)`,
+                            fillStyle: datasets[0].backgroundColor[i],
+                            index: i
+                            }))
+                            }
+                        }
+                    }
                 },
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+
             },
             header_row: [
                 {
@@ -245,10 +262,9 @@ export default defineComponent({
             api('/child/remarks/')
                 .then((response) => response.data)
                 .then((data) => {
-                    // console.log(data)
                     this.childRemarks = data
-                    this.remarks_data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
-                    // console.log(this.data)
+                    // this.remarks_data.datasets[0].data = [data.Underweight_Percentage, data.Normal_Percentage, data.Overweight_Percentage, data.Obese_Percentage]
+                    this.remarks_data.datasets[0].data = [data.Underweight, data.Normal, data.Overweight, data.Obese]
                 })
         },
         fetchChildCount() {
