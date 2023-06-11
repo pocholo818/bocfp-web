@@ -159,7 +159,7 @@ export default defineComponent({
         return {
             isOpen: false,
             childList: [],
-            childCount: "",
+            childCount: 0,
             childRemarks: {},
             countTotalRemarks: 0,
             remarks_data: {
@@ -198,15 +198,13 @@ export default defineComponent({
                 plugins: {
                     legend: {
                         labels: {
-                        generateLabels: (chart: any) => {
-                            // console.log(chart)
-                            const total = this.childCount;
-                            const datasets = chart.data.datasets;
-                            return datasets[0].data.map((data: any, i: any, total: any) => ({
-                            text: `${chart.data.labels[i]} - ${data}(${data/Number(this.childCount)*100}%)`,
-                            fillStyle: datasets[0].backgroundColor[i],
-                            index: i
-                            }))
+                            generateLabels: (chart: any) => {
+                                const datasets = chart.data.datasets;
+                                return datasets[0].data.map((data: any, i: any) => ({
+                                    text: `${chart.data.labels[i]} - ${data}(${this.convert2Float(data / Number(this.childCount) * 100)}%)`,
+                                    fillStyle: datasets[0].backgroundColor[i],
+                                    index: i
+                                }))
                             }
                         }
                     }
@@ -311,6 +309,9 @@ export default defineComponent({
         },
         async generateReport() {
             this.fetchChildData()
+        },
+        convert2Float(number: any) {
+            return parseFloat(number).toFixed(2)
         }
     },
     ionViewDidEnter() {
