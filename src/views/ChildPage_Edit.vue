@@ -39,7 +39,8 @@
 
                         <ion-item>
                             <ion-label>Birth Date:</ion-label>
-                            <input type="date" v-model="childDetails.bdate" style="background-color: var(--ion-color-primary); color: white" max="2099-12-31" />
+                            <input type="date" v-model="childDetails.bdate"
+                                style="background-color: var(--ion-color-primary); color: white" max="2099-12-31" />
                         </ion-item>
 
                         <ion-item>
@@ -54,7 +55,6 @@
 
         </ion-content>
     </ion-page>
-
 </template>
   
 <script lang="ts">
@@ -151,11 +151,11 @@ export default defineComponent({
             // checks if empty inputs
             if (this.childDetails.fname && this.childDetails.lname) {
                 // checks bdate
-                if (bdate.toISOString().split("T")[0] == currentDate.toISOString().split("T")[0] || dateDifference <= 0) {
+                if (bdate.toISOString().split("T")[0] == currentDate.toISOString().split("T")[0] || dateDifference <= 6) {
                     toast.message = "Invalid Child Birthdate"
                 }
                 else {
-                        api.patch('/childUpdate/:id', data)
+                    api.patch('/childUpdate/:id', data)
                         .then(response => response.data)
                         .then((data) => {
                             toast.message = 'Success!'
@@ -229,6 +229,4 @@ export default defineComponent({
 </script>
   
 
-<style scoped>
-
-</style>
+<style scoped></style>

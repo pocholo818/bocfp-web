@@ -172,21 +172,24 @@ export default defineComponent({
                 ]
             },
             age_data: {
-                labels: ['1 Year Old', '2 Years Old', '3 Years Old', '4 Years Old', '5 Years Old', '6 Years Old',
-                    '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
+                // labels: ['1 Year Old', '2 Years Old', '3 Years Old', '4 Years Old', '5 Years Old', '6 Years Old',
+                //     '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
+                labels: ['7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
                 datasets: [
                     {
-                        backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#000000', '#40e0d0', '#ff8000', '#0080ff', '#8000ff', '#00ff80'],
+                        backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff',
+                            '#000000'],
                         data: [0]
                     }
                 ]
             },
             purok_data: {
-                labels: ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6',
-                    'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10', 'Purok 11', 'Purok 12'],
+                labels: ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6', 'Purok 7', 'Purok 8',
+                    'Purok 9', 'Purok 10', 'Purok 11', 'Purok 12', 'Purok 13', 'Purok 14'],
                 datasets: [
                     {
-                        backgroundColor: ['#c0392b', '#27ae60', '#2980b9', '#f39c12', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#16a085', '#d35400', '#3498db', '#9b59b6'],
+                        backgroundColor: ['#c0392b', '#27ae60', '#2980b9', '#f39c12', '#8e44ad', '#2c3e50',
+                            '#f1c40f', '#e67e22', '#16a085', '#d35400', '#3498db', '#9b59b6', '#00FFFF', '#FF00FF'],
                         data: [0]
                     }
                 ]
@@ -201,7 +204,7 @@ export default defineComponent({
                             generateLabels: (chart: any) => {
                                 const datasets = chart.data.datasets;
                                 return datasets[0].data.map((data: any, i: any) => ({
-                                    text: `${chart.data.labels[i]} - ${data}(${this.convert2Float(data / Number(this.childCount) * 100)}%)`,
+                                    text: `${chart.data.labels[i]} - ${data} (${this.convert2Float(data / Number(this.childCount) * 100)}%)`,
                                     fillStyle: datasets[0].backgroundColor[i],
                                     index: i
                                 }))
@@ -285,8 +288,7 @@ export default defineComponent({
                 .then((response) => response.data)
                 .then((data) => {
                     // console.log(data)
-                    this.age_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
-                    data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
+                    this.age_data.datasets[0].data = [data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
                 })
         },
         fetchChildPurok() {
@@ -295,7 +297,7 @@ export default defineComponent({
                 .then((data) => {
                     // console.log(data)
                     this.purok_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
-                    data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
+                    data['7'], data['8'], data['9'], data['10'], data['11'], data['12'], data['13'], data['14']]
                 })
         },
         handleRefresh(event: any) {

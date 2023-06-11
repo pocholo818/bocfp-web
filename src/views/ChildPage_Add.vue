@@ -41,7 +41,8 @@
                 <ion-label>Birth Date:</ion-label>
                 <!-- <ion-datetime-button datetime="dateOfBirth"></ion-datetime-button> -->
 
-                <input type="date" v-model="childDetails.bdate" style="background-color: var(--ion-color-primary); color: white" max="2099-12-31" />
+                <input type="date" v-model="childDetails.bdate"
+                  style="background-color: var(--ion-color-primary); color: white" max="2099-12-31" />
 
                 <!-- <ion-modal :keep-contents-mounted="true" class="datetime-modal">
                   <ion-datetime id="dateOfBirth" displayFormat="YYYY.MM.DD" class="dateStyle" presentation="date"
@@ -63,7 +64,6 @@
 
     </ion-content>
   </ion-page>
-
 </template>
   
 <script lang="ts">
@@ -145,7 +145,7 @@ export default defineComponent({
       // checks if empty child details
       if (this.childDetails.fname && this.childDetails.lname && this.childDetails.sex && this.childDetails.bdate) {
         // checks child bdate
-        if (bdate.toISOString().split("T")[0] == currentDate.toISOString().split("T")[0] || dateDifference <= 0) {
+        if (bdate.toISOString().split("T")[0] == currentDate.toISOString().split("T")[0] || dateDifference <= 6) {
           toast.message = "Invalid Child Birthdate"
         }
         else {
@@ -157,7 +157,7 @@ export default defineComponent({
           }
           else {
             toast.message = "Success!"
-              api.post('/child', data)
+            api.post('/child', data)
               .then(response => response.data)
               .then((data) => {
                 toast.message = 'Success!'
@@ -233,6 +233,4 @@ export default defineComponent({
 </script>
   
 
-<style scoped>
-
-</style>
+<style scoped></style>
