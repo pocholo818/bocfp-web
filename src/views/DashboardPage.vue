@@ -78,7 +78,7 @@
                 <ion-card-content>
                     <h1>Age</h1>
                     <div>
-                        <PieChart :data="age_data" :options="options" />
+                        <BarChart :data="age_data" :options="ageOptions" />
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -87,7 +87,7 @@
                 <ion-card-content>
                     <h1>Purok</h1>
                     <div>
-                        <PieChart :data="purok_data" :options="options" />
+                        <BarChart :data="purok_data" :options="options" />
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -131,6 +131,7 @@ import HeaderBar from '@/components/HeaderBar.vue';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend)
 import PieChart from '@/components/PieChart.vue';
+import BarChart from '@/components/BarChart.vue';
 import { instance as api } from "@/network/Network";
 import moment from 'moment';
 
@@ -138,6 +139,7 @@ export default defineComponent({
     name: 'ChildPage',
     components: {
         PieChart,
+        BarChart,
         HeaderBar,
         IonCard,
         IonCardTitle,
@@ -162,6 +164,7 @@ export default defineComponent({
             childCount: 0,
             childRemarks: {},
             countTotalRemarks: 0,
+            countTotalChildsOfAgePerRemark: [0, 0, 0, 0, 0, 0],
             remarks_data: {
                 labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
                 datasets: [
@@ -172,14 +175,29 @@ export default defineComponent({
                 ]
             },
             age_data: {
+                labels: ['7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
                 // labels: ['1 Year Old', '2 Years Old', '3 Years Old', '4 Years Old', '5 Years Old', '6 Years Old',
                 //     '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
-                labels: ['7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
                 datasets: [
                     {
-                        backgroundColor: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff',
-                            '#000000'],
-                        data: [0]
+                        backgroundColor: '#FFFF00',
+                        label: 'Underweight',
+                        data: [0, 0, 0, 0, 0, 0]
+                    },
+                    {
+                        backgroundColor: '#41B883',
+                        label: 'Normal',
+                        data: [0, 0, 0, 0, 0, 0]
+                    },
+                    {
+                        backgroundColor: '#FFA500',
+                        label: 'Overweight',
+                        data: [0, 0, 0, 0, 0, 0]
+                    },
+                    {
+                        backgroundColor: '#FF0000',
+                        label: 'Obese',
+                        data: [0, 0, 0, 0, 0, 0]
                     }
                 ]
             },
@@ -214,7 +232,27 @@ export default defineComponent({
                 },
                 responsive: true,
                 maintainAspectRatio: false,
-
+            },
+            ageOptions: {
+                // plugins: {
+                //     legend: { display: false }
+                // },
+                plugins: {
+                    legend: {
+                        labels: {
+                            generateLabels: (chart: any) => {
+                                const datasets = chart.data.datasets;
+                                return datasets[0].data.map((data: any, i: any) => ({
+                                    text: '',
+                                    // fillStyle: datasets[0].backgroundColor[i],
+                                    index: i
+                                }))
+                            }
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             header_row: [
                 {
@@ -284,11 +322,43 @@ export default defineComponent({
                 })
         },
         fetchChildAge() {
-            api('/child/age')
+            api('/child/age/remarks')
                 .then((response) => response.data)
                 .then((data) => {
-                    // console.log(data)
-                    this.age_data.datasets[0].data = [data['7'], data['8'], data['9'], data['10'], data['11'], data['12']]
+                    Object.entries(data).forEach((data_value: any, i: number) => {
+                        const [key, value] = Object.entries(data_value)
+
+                        enum remarkIndex {
+                            "Underweight" = 0,
+                            "Normal" = 1,
+                            "Overweight" = 2,
+                            "Obese" = 3
+                        }
+                        const colors = ['#FFFF00', '#41B883', '#FFA500', '#FF0000']
+
+                        this.age_data.datasets[remarkIndex[key[1] as keyof typeof remarkIndex]] = {
+                            backgroundColor: colors[i],
+                            label: key[1] as string,
+                            data: Object.values(value[1] as number[])
+                        }
+                    })
+
+                    this.countTotalChildsOfAgePerRemark = Object.values(data as number[]).reduce((acc: any, curr: any) => {
+                        curr.forEach((num: number, index: number) => {
+                            acc[index] = (acc[index] || 0) + num;
+                        });
+                        return acc;
+                    }, []);
+
+                    this.ageOptions.plugins.legend.labels.generateLabels = (chart: any) => {
+                        const datasets = chart.data.datasets;
+
+                        return datasets[0].data.map((data: any, i: any) => ({
+                            text: `${chart.data.labels[i]} - ${this.countTotalChildsOfAgePerRemark[i]}`,
+                            // fillStyle: datasets[0].backgroundColor[i],
+                            index: i
+                        }))
+                    }
                 })
         },
         fetchChildPurok() {
@@ -313,7 +383,7 @@ export default defineComponent({
             this.fetchChildData()
         },
         convert2Float(number: any) {
-            return parseFloat(number).toFixed(2)
+            return parseFloat(number).toFixed(1)
         }
     },
     ionViewDidEnter() {
