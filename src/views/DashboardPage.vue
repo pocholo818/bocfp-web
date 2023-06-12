@@ -76,7 +76,7 @@
 
             <ion-card class="ion-margin-bottom">
                 <ion-card-content>
-                    <h1>Age and Remarks</h1>
+                    <h1>Age</h1>
                     <div>
                         <BarChart :data="age_data" :options="ageOptions" />
                     </div>
@@ -94,7 +94,7 @@
 
             <ion-card class="ion-margin-bottom">
                 <ion-card-content>
-                    <h1>Purok and Remarks</h1>
+                    <h1>Purok</h1>
                     <div>
                         <BarChart :data="purok_remarks_data" :options="ageOptions" />
                     </div>
