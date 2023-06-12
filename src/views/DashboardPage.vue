@@ -38,7 +38,7 @@
                                     <!-- content -->
                                     <ion-row class="remark">
                                         <ion-col>
-                                            <ion-card-subtitle style="background-color: #FFFF00; color: black;">Underweight:
+                                            <ion-card-subtitle style="background-color: #fdf17d; color: black;">Underweight:
                                                 <br>{{
                                                     childRemarks.Underweight
                                                 }}</ion-card-subtitle>
@@ -76,18 +76,27 @@
 
             <ion-card class="ion-margin-bottom">
                 <ion-card-content>
-                    <h1>Age</h1>
+                    <h1>Age and Remarks</h1>
                     <div>
                         <BarChart :data="age_data" :options="ageOptions" />
                     </div>
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="ion-margin-bottom">
+            <!-- <ion-card class="ion-margin-bottom">
                 <ion-card-content>
                     <h1>Purok</h1>
                     <div>
                         <BarChart :data="purok_data" :options="options" />
+                    </div>
+                </ion-card-content>
+            </ion-card> -->
+
+            <ion-card class="ion-margin-bottom">
+                <ion-card-content>
+                    <h1>Purok and Remarks</h1>
+                    <div>
+                        <BarChart :data="purok_remarks_data" :options="ageOptions" />
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -96,8 +105,9 @@
         <ion-footer class="ion-no-border ion-padding" style="padding-bottom: 6px; padding-top: 0;">
             <ion-toolbar color="none">
                 <ion-button @click="fetchChildRemarks(), fetchChildCount(),
-                    fetchChildPurok(), fetchChildAge()">Refresh Data</ion-button>
-                <ion-button router-link="/report">Generate Report</ion-button>
+                    fetchChildPurok(), fetchChildAge(), fetchChildPurokRemarks()">Refresh Data</ion-button>
+                <ion-button router-link="/report">Generate Excel</ion-button>
+                <ion-button router-link="/report2">Generate Report</ion-button>
             </ion-toolbar>
         </ion-footer>
 
@@ -147,7 +157,7 @@ export default defineComponent({
         IonCardHeader,
         IonCardContent,
         IonRefresher, IonRefresherContent,
-        IonCol, IonRow, IonGrid,
+        IonCol, IonRow, IonGrid
     },
     setup() {
         return {
@@ -169,7 +179,7 @@ export default defineComponent({
                 labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
                 datasets: [
                     {
-                        backgroundColor: ['#FFFF00', '#41B883', '#FFA500', '#FF0000'],
+                        backgroundColor: ['#fdf17d', '#41B883', '#FFA500', '#FF0000'],
                         data: [0]
                     }
                 ]
@@ -180,7 +190,7 @@ export default defineComponent({
                 //     '7 Years Old', '8 Years Old', '9 Years Old', '10 Years Old', '11 Years Old', '12 Years Old'],
                 datasets: [
                     {
-                        backgroundColor: '#FFFF00',
+                        backgroundColor: '#fdf17d',
                         label: 'Underweight',
                         data: [0, 0, 0, 0, 0, 0]
                     },
@@ -209,6 +219,32 @@ export default defineComponent({
                         backgroundColor: ['#c0392b', '#27ae60', '#2980b9', '#f39c12', '#8e44ad', '#2c3e50',
                             '#f1c40f', '#e67e22', '#16a085', '#d35400', '#3498db', '#9b59b6', '#00FFFF', '#FF00FF'],
                         data: [0]
+                    }
+                ]
+            },
+            purok_remarks_data: {
+                labels: ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6', 'Purok 7', 'Purok 8',
+                    'Purok 9', 'Purok 10', 'Purok 11', 'Purok 12', 'Purok 13', 'Purok 14'],
+                datasets: [
+                    {
+                        backgroundColor: '#fdf17d',
+                        label: 'Underweight',
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    },
+                    {
+                        backgroundColor: '#41B883',
+                        label: 'Normal',
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    },
+                    {
+                        backgroundColor: '#FFA500',
+                        label: 'Overweight',
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    },
+                    {
+                        backgroundColor: '#FF0000',
+                        label: 'Obese',
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     }
                 ]
             },
@@ -244,7 +280,7 @@ export default defineComponent({
                                 const datasets = chart.data.datasets;
                                 return datasets[0].data.map((data: any, i: any) => ({
                                     text: '',
-                                    // fillStyle: datasets[0].backgroundColor[i],
+                                    fillStyle: datasets[0].backgroundColor[i],
                                     index: i
                                 }))
                             }
@@ -325,6 +361,8 @@ export default defineComponent({
             api('/child/age/remarks')
                 .then((response) => response.data)
                 .then((data) => {
+                    const colors = ['#fdf17d', '#41B883', '#FFA500', '#FF0000']
+
                     Object.entries(data).forEach((data_value: any, i: number) => {
                         const [key, value] = Object.entries(data_value)
 
@@ -334,7 +372,6 @@ export default defineComponent({
                             "Overweight" = 2,
                             "Obese" = 3
                         }
-                        const colors = ['#FFFF00', '#41B883', '#FFA500', '#FF0000']
 
                         this.age_data.datasets[remarkIndex[key[1] as keyof typeof remarkIndex]] = {
                             backgroundColor: colors[i],
@@ -354,8 +391,8 @@ export default defineComponent({
                         const datasets = chart.data.datasets;
 
                         return datasets[0].data.map((data: any, i: any) => ({
-                            text: `${chart.data.labels[i]} - ${this.countTotalChildsOfAgePerRemark[i]}`,
-                            // fillStyle: datasets[0].backgroundColor[i],
+                            text: `${chart.data.labels[i]} - ${this.countTotalChildsOfAgePerRemark[i]} (${this.convert2Float(this.countTotalChildsOfAgePerRemark[i] / Number(this.childCount) * 100)}%)`,
+                            fillStyle: colors[i],   
                             index: i
                         }))
                     }
@@ -368,6 +405,63 @@ export default defineComponent({
                     // console.log(data)
                     this.purok_data.datasets[0].data = [data['1'], data['2'], data['3'], data['4'], data['5'], data['6'],
                     data['7'], data['8'], data['9'], data['10'], data['11'], data['12'], data['13'], data['14']]
+                })
+        },
+        fetchChildPurokRemarks() {
+            api('/child/purok/remarks')
+                .then((response) => response.data)
+                .then((data) => {
+                    const colors = ['#fdf17d', '#41B883', '#FFA500', '#FF0000']
+                    const colors2 = [
+                        '#FF0000',
+                        '#00FF00',
+                        '#0000FF',
+                        '#FFFF00',
+                        '#FF00FF',
+                        '#00FFFF',
+                        '#FFA500',
+                        '#800080',
+                        '#008000',
+                        '#800000',
+                        '#008080',
+                        '#FFC0CB',
+                        '#FFD700',
+                        '#00CED1',
+                        ];
+
+                    Object.entries(data).forEach((data_value: any, i: number) => {
+                        const [key, value] = Object.entries(data_value)
+
+                        enum remarkIndex {
+                            "Underweight" = 0,
+                            "Normal" = 1,
+                            "Overweight" = 2,
+                            "Obese" = 3
+                        }
+
+                        this.purok_remarks_data.datasets[remarkIndex[key[1] as keyof typeof remarkIndex]] = {
+                            backgroundColor: colors[i],
+                            label: key[1] as string,
+                            data: Object.values(value[1] as number[])
+                        }
+                    })
+
+                    this.countTotalChildsOfAgePerRemark = Object.values(data as number[]).reduce((acc: any, curr: any) => {
+                        curr.forEach((num: number, index: number) => {
+                            acc[index] = (acc[index] || 0) + num;
+                        });
+                        return acc;
+                    }, []);
+
+                    this.ageOptions.plugins.legend.labels.generateLabels = (chart: any) => {
+                        const datasets = chart.data.datasets;
+
+                        return datasets[0].data.map((data: any, i: any) => ({
+                            text: `${chart.data.labels[i]} - ${this.countTotalChildsOfAgePerRemark[i]} (${this.convert2Float(this.countTotalChildsOfAgePerRemark[i] / Number(this.childCount) * 100)}%)`,
+                            fillStyle: colors2[i],
+                            index: i
+                        }))
+                    }
                 })
         },
         handleRefresh(event: any) {
@@ -391,6 +485,7 @@ export default defineComponent({
         this.fetchChildCount()
         this.fetchChildAge()
         this.fetchChildPurok()
+        this.fetchChildPurokRemarks()
     },
     watch: {
         $route() {
