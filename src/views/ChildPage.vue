@@ -178,7 +178,7 @@ export default defineComponent({
       offset: 0,
       isNextEnabled: true,
       childFilter: "all",
-      searchTimeout: 0
+      searchTimeout: setTimeout(() => 0, 0),
     };
   },
   methods: {

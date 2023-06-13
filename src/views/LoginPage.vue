@@ -102,6 +102,7 @@ export default defineComponent({
                         // store data
                         localStorage.setItem('user_id', data.user_id)
                         localStorage.setItem('fname', data.fname)
+                        localStorage.setItem('lname', data.lname)
                         localStorage.setItem('admin_power', data.admin_power)
                         localStorage.setItem('access_token', data.accessToken)
                         localStorage.setItem('refresh_token', data.refreshToken)

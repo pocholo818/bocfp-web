@@ -139,7 +139,7 @@ export default defineComponent({
         user_id: user_id,
       },
       user_id: "",
-      searchTimeout: 0,
+      searchTimeout: setTimeout(() => 0, 0),
       annouFilter: "all",
       admin_power: ""
     };

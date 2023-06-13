@@ -155,6 +155,7 @@ export default defineComponent({
       toast.message = 'Logout Success!'
       localStorage.removeItem('user_id')
       localStorage.removeItem('fname')
+      localStorage.removeItem('lname')
       localStorage.removeItem('admin_power')
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')

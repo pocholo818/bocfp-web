@@ -3,7 +3,7 @@
         <HeaderBar title="Dashboard" />
 
         <!-- content -->
-        <ion-content :fullscreen="true" class="ion-padding">
+        <ion-content :fullscreen="true" class="ion-padding" ref="screen">
 
             <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
@@ -100,6 +100,10 @@
                     </div>
                 </ion-card-content>
             </ion-card>
+
+            <div>
+                <img ref="canvas">
+            </div>
         </ion-content>
 
         <ion-footer class="ion-no-border ion-padding" style="padding-bottom: 6px; padding-top: 0;">
@@ -107,7 +111,8 @@
                 <ion-button @click="fetchChildRemarks(), fetchChildCount(),
                     fetchChildPurok(), fetchChildAge(), fetchChildPurokRemarks()">Refresh Data</ion-button>
                 <ion-button router-link="/report">Generate Excel</ion-button>
-                <ion-button router-link="/report2">Generate Report</ion-button>
+                <ion-button @click="exportToPDF">Generate Report</ion-button>
+                <!-- <ion-button router-link="/report">Generate Report</ion-button> -->
             </ion-toolbar>
         </ion-footer>
 
@@ -143,7 +148,19 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 import PieChart from '@/components/PieChart.vue';
 import BarChart from '@/components/BarChart.vue';
 import { instance as api } from "@/network/Network";
-import moment from 'moment';
+// import moment from 'moment';
+// import html2pdf from "html2pdf.js";
+// import html2canvas from "html2canvas";
+// import pdfMake from "pdfmake";
+// import pdfMake from "../../.node_modules/pdfmake/build/pdfmake.js";
+import pdfMake from 'pdfmake/build/pdfmake';
+import Image from 'pdfmake/build/pdfmake';
+// import logoImage from '@/assets/images/logo.png'; // Replace with your image file path
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import table from 'pdfmake/build/pdfmake'; 
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+
 
 export default defineComponent({
     name: 'ChildPage',
@@ -168,6 +185,7 @@ export default defineComponent({
         }
     },
     data() {
+        
         return {
             isOpen: false,
             childList: [],
@@ -175,6 +193,32 @@ export default defineComponent({
             childRemarks: {},
             countTotalRemarks: 0,
             countTotalChildsOfAgePerRemark: [0, 0, 0, 0, 0, 0],
+            pdfPurokRemark: [
+                ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese'],
+                ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            ],
+            pdfAgeRemark: [
+                ['Age','Underweight', 'Normal', 'Overweight', 'Obese'],
+                ['7 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['8 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['9 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['10 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['11 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['12 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data']
+            ],
             remarks_data: {
                 labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
                 datasets: [
@@ -411,6 +455,19 @@ export default defineComponent({
             api('/child/purok/remarks')
                 .then((response) => response.data)
                 .then((data) => {
+                    // console.log(data);
+                    data.Normal.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][2] = element.toString();
+                    });
+                    data.Obese.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][4] = element.toString();
+                    });
+                    data.Overweight.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][3] = element.toString();
+                    });
+                    data.Underweight.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][1] = element.toString();
+                    });
                     const colors = ['#fdf17d', '#41B883', '#FFA500', '#FF0000']
                     const colors2 = [
                         '#FF0000',
@@ -477,8 +534,81 @@ export default defineComponent({
             this.fetchChildData()
         },
         convert2Float(number: any) {
-            return parseFloat(number).toFixed(1)
-        }
+            return parseFloat(number).toFixed(2)
+        },
+        exportToPDF() {
+            const getTableContent = () => {
+            // const tableData = [
+            //     ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese'],
+            //     ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            //     ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+            // ];
+
+            const tableLayout = {
+                fillColor: (rowIndex: number, node: any, columnIndex: any) => {
+                // Customize the background color of the table cells
+                return rowIndex === 0 ? '#CCCCCC' : null; // Header row color: '#CCCCCC'
+                }
+            };
+
+            const tableContent = {
+                table: {
+                headerRows: 1,
+                body: this.pdfPurokRemark,
+                widths: ['*', '*', '*', '*', '*'], // Adjust the column widths as needed
+                layout: tableLayout,
+                }
+            };
+
+            return tableContent;
+            };
+
+            const getHeaderContent = () => {
+                return {
+                    text: 'Summary Report', 
+                    alignment: 'center',
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 20, 0, 10], // Adjust the margins as needed
+                };
+            };
+
+            const getFooterContent = () => {
+                return {
+                    text: `Prepared by ${localStorage.getItem('fname') || ''} ${localStorage.getItem('lname') || ''}`, // Replace with your desired footer content
+                    // alignment: 'center',
+                    fontSize: 10,
+                    bold: true,
+                    margin: [0, 10, 0, 0], // Adjust the margins as needed
+                };
+            };
+
+
+            const documentDefinition : any = {
+                    content: [
+                        getHeaderContent(),
+                        '\n',
+                        getTableContent(),
+                        '\n',
+                        getFooterContent(),
+
+                    ]
+                };
+
+                pdfMake.createPdf(documentDefinition).download('example.pdf');
+        },
     },
     ionViewDidEnter() {
         this.fetchChildRemarks()

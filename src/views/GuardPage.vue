@@ -139,7 +139,7 @@ export default defineComponent({
             offset: 0,
             guardFilter: "all",
             isNextEnabled: true,
-            searchTimeout: 0
+            searchTimeout: setTimeout(() => 0, 0),
         };
     },
     methods: {
