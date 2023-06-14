@@ -451,13 +451,15 @@ export default defineComponent({
                 })
         },
         fetchChildPurokRemarks() {
-            api('/child/purok/remarks')
+            api(`/child/purok/remarks`)
+                // api(`/child/report?from=2023-06-01&to=2023-06-15`)
                 .then((response) => response.data)
                 .then((data) => {
+                    // console.log(data)
                     let totalChild = 0
                     let remarksTotal = [0, 0, 0, 0]
-                    let purokTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                    // console.log(data);
+                    // let purokTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
                     data.Underweight.forEach((element: any, index: any) => {
                         this.pdfPurokRemark[index + 1][1] = element.toString();
                         remarksTotal[0] += Number(this.pdfPurokRemark[index + 1][1]);
@@ -485,8 +487,6 @@ export default defineComponent({
                         this.pdfPurokRemark[this.pdfPurokRemark.length - 1][i + 1] = remarksTotal[i]
                     })
 
-                    console.log(data)
-
                     this.pdfPurokRemark.forEach((row: any, i: number) => {
                         if (i === 0 || i === this.pdfPurokRemark.length - 1) return
 
@@ -501,8 +501,7 @@ export default defineComponent({
                     })
 
                     this.pdfPurokRemark[this.pdfPurokRemark.length - 1][5] = totalChild
-
-                    // this.pdfPurokRemark[1][5] = purokTotal[1]
+                    // console.log("total: ", this.pdfPurokRemark[this.pdfPurokRemark.length - 1][5])
 
                     const colors = ['#fdf17d', '#41B883', '#FFA500', '#FF0000']
                     const colors2 = [
@@ -628,7 +627,6 @@ export default defineComponent({
                     margin: [0, 14, 0, 0], // Adjust the margins as needed
                 };
             };
-
 
             const documentDefinition: any = {
                 content: [
