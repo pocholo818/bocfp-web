@@ -650,7 +650,7 @@ export default defineComponent({
                     ]
                 };
 
-                pdfMake.createPdf(documentDefinition).download('example.pdf');
+                pdfMake.createPdf(documentDefinition).download('Report Summary - All Purok.pdf');
         },
         async openSummaryReportModal() {
             const modal = await modalController.create({
