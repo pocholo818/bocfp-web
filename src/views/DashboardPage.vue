@@ -154,7 +154,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import Image from 'pdfmake/build/pdfmake';
 // import myImage from '@/assets/images/logo.png'
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import table from 'pdfmake/build/pdfmake'; 
+import table from 'pdfmake/build/pdfmake';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -182,7 +182,7 @@ export default defineComponent({
         }
     },
     data() {
-        
+
         return {
             isOpen: false,
             childList: [],
@@ -191,32 +191,32 @@ export default defineComponent({
             countTotalRemarks: 0,
             countTotalChildsOfAgePerRemark: [0, 0, 0, 0, 0, 0],
             pdfPurokRemark: [
-                ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Total', 'Row 2 Data', 0, 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['Purok 1', 0, 0, 0, 0, 0],
+                ['Purok 2', 0, 0, 0, 0, 0],
+                ['Purok 3', 0, 0, 0, 0, 0],
+                ['Purok 4', 0, 0, 0, 0, 0],
+                ['Purok 5', 0, 0, 0, 0, 0],
+                ['Purok 6', 0, 0, 0, 0, 0],
+                ['Purok 7', 0, 0, 0, 0, 0],
+                ['Purok 8', 0, 0, 0, 0, 0],
+                ['Purok 9', 0, 0, 0, 0, 0],
+                ['Purok 10', 0, 0, 0, 0, 0],
+                ['Purok 11', 0, 0, 0, 0, 0],
+                ['Purok 12', 0, 0, 0, 0, 0],
+                ['Purok 13', 0, 0, 0, 0, 0],
+                ['Purok 14', 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
             ],
             pdfAgeRemark: [
-                ['Age','Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                ['7 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['8 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['9 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['10 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['11 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['12 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
-                ['Total', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Age', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['7 Years Old', 0, 0, 0, 0, 0],
+                ['8 Years Old', 0, 0, 0, 0, 0],
+                ['9 Years Old', 0, 0, 0, 0, 0],
+                ['10 Years Old', 0, 0, 0, 0, 0],
+                ['11 Years Old', 0, 0, 0, 0, 0],
+                ['12 Years Old', 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
             ],
             remarks_data: {
                 labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
@@ -435,7 +435,7 @@ export default defineComponent({
 
                         return datasets[0].data.map((data: any, i: any) => ({
                             text: `${chart.data.labels[i]} - ${this.countTotalChildsOfAgePerRemark[i]} (${this.convert2Float(this.countTotalChildsOfAgePerRemark[i] / Number(this.childCount) * 100)}%)`,
-                            fillStyle: colors[i],   
+                            fillStyle: colors[i],
                             index: i
                         }))
                     }
@@ -455,52 +455,52 @@ export default defineComponent({
                 .then((response) => response.data)
                 .then((data) => {
                     let totalChild = 0
-                    let remarksTotal = [0,0,0,0]
-                    let purokTotal = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                    let remarksTotal = [0, 0, 0, 0]
+                    let purokTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                     // console.log(data);
-                    data.Underweight.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][1] = element.toString();
-                             remarksTotal[0] += Number(this.pdfPurokRemark[index+1][1]);
-                            totalChild += Number(this.pdfPurokRemark[index+1][1])
+                    data.Underweight.forEach((element: any, index: any) => {
+                        this.pdfPurokRemark[index + 1][1] = element.toString();
+                        remarksTotal[0] += Number(this.pdfPurokRemark[index + 1][1]);
+                        totalChild += Number(this.pdfPurokRemark[index + 1][1])
                     });
-                    data.Normal.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][2] = element.toString();
-                              remarksTotal[1] += Number(this.pdfPurokRemark[index+1][2]);
-                              totalChild += Number(this.pdfPurokRemark[index+1][2])
+                    data.Normal.forEach((element: any, index: any) => {
+                        this.pdfPurokRemark[index + 1][2] = element.toString();
+                        remarksTotal[1] += Number(this.pdfPurokRemark[index + 1][2]);
+                        totalChild += Number(this.pdfPurokRemark[index + 1][2])
                     });
-                    data.Overweight.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][3] = element.toString();
-                             remarksTotal[2] += Number(this.pdfPurokRemark[index+1][3]);
-                             totalChild += Number(this.pdfPurokRemark[index+1][3])
+                    data.Overweight.forEach((element: any, index: any) => {
+                        this.pdfPurokRemark[index + 1][3] = element.toString();
+                        remarksTotal[2] += Number(this.pdfPurokRemark[index + 1][3]);
+                        totalChild += Number(this.pdfPurokRemark[index + 1][3])
                     });
-                    data.Obese.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][4] = element.toString();
-                             remarksTotal[3] += Number(this.pdfPurokRemark[index+1][4]);
-                             totalChild += Number(this.pdfPurokRemark[index+1][4])
+                    data.Obese.forEach((element: any, index: any) => {
+                        this.pdfPurokRemark[index + 1][4] = element.toString();
+                        remarksTotal[3] += Number(this.pdfPurokRemark[index + 1][4]);
+                        totalChild += Number(this.pdfPurokRemark[index + 1][4])
                     });
 
                     // remark total
-                    this.pdfPurokRemark[this.pdfPurokRemark.length-1].forEach((row: any, i: number) => {
-                        if(i >= 4) return
-                        this.pdfPurokRemark[this.pdfPurokRemark.length-1][i+1] = remarksTotal[i]
+                    this.pdfPurokRemark[this.pdfPurokRemark.length - 1].forEach((row: any, i: number) => {
+                        if (i >= 4) return
+                        this.pdfPurokRemark[this.pdfPurokRemark.length - 1][i + 1] = remarksTotal[i]
                     })
 
                     console.log(data)
 
                     this.pdfPurokRemark.forEach((row: any, i: number) => {
-                        if(i === 0 || i === this.pdfPurokRemark.length - 1) return
+                        if (i === 0 || i === this.pdfPurokRemark.length - 1) return
 
                         let total = 0
 
                         this.pdfPurokRemark[i].forEach((val: any, i: number) => {
-                            if(i <= 0 || i >= 5) return
+                            if (i <= 0 || i >= 5) return
                             total += Number(val)
                         })
 
                         row[5] = total
                     })
 
-                    this.pdfPurokRemark[this.pdfPurokRemark.length-1][5] = totalChild
+                    this.pdfPurokRemark[this.pdfPurokRemark.length - 1][5] = totalChild
 
                     // this.pdfPurokRemark[1][5] = purokTotal[1]
 
@@ -520,7 +520,7 @@ export default defineComponent({
                         '#FFC0CB',
                         '#FFD700',
                         '#00CED1',
-                        ];
+                    ];
 
                     Object.entries(data).forEach((data_value: any, i: number) => {
                         const [key, value] = Object.entries(data_value)
@@ -574,45 +574,45 @@ export default defineComponent({
         },
         exportToPDF() {
             const getTableContent = () => {
-            const tableLayout = {
-                fillColor: (rowIndex: number, node: any, columnIndex: any) => {
-                // Customize the background color of the table cells
-                return rowIndex === 0 ? '#CCCCCC' : null; // Header row color: '#CCCCCC'
-                }
-            };
+                const tableLayout = {
+                    fillColor: (rowIndex: number, node: any, columnIndex: any) => {
+                        // Customize the background color of the table cells
+                        return rowIndex === 0 ? '#CCCCCC' : null; // Header row color: '#CCCCCC'
+                    }
+                };
 
-            const tableContent = {
-                table: {
-                headerRows: 1,
-                body: this.pdfPurokRemark,
-                widths: ['*', '*', '*', '*', '*','*'], // Adjust the column widths as needed
-                layout: tableLayout,
-                }
-            };
+                const tableContent = {
+                    table: {
+                        headerRows: 1,
+                        body: this.pdfPurokRemark,
+                        widths: ['*', '*', '*', '*', '*', '*'], // Adjust the column widths as needed
+                        layout: tableLayout,
+                    }
+                };
 
-            return tableContent;
+                return tableContent;
             };
 
             const getHeaderContent = () => {
                 return {
                     text: [
-                    {
-                        text: 'Repulic of the Philippines\n',
-                        fontSize: 16,
-                        bold: true,
-                        
-                    },
-                    {
-                        text: 'Barangay Hall Old Cabalan\n',
-                        fontSize: 14,
-                    },
-                    {
-                        text: [
-                            'Purok 11 Narra Lane, Olongapo City\n',
-                            'Zambales, Philippines 2200\n',
-                        ],
-                        fontSize: 13,
-                    },
+                        {
+                            text: 'Repulic of the Philippines\n',
+                            fontSize: 16,
+                            bold: true,
+
+                        },
+                        {
+                            text: 'Barangay Hall Old Cabalan\n',
+                            fontSize: 14,
+                        },
+                        {
+                            text: [
+                                'Purok 11 Narra Lane, Olongapo City\n',
+                                'Zambales, Philippines 2200\n',
+                            ],
+                            fontSize: 13,
+                        },
                     ],
                     alignment: 'center',
                     margin: [0, 20, 0, 10],
@@ -630,27 +630,27 @@ export default defineComponent({
             };
 
 
-            const documentDefinition : any = {
-                    content: [
-                        getHeaderContent(),
-                        '\n',
-                        // `Report Summary for ${test}`,                        
-                        {
-                            text: 'Report Summary by Purok\n',
-                            alignment: 'center',
-                            fontSize: 14,
-                            bold: true
-                        },
-                        '\n',
-                        getTableContent(),
-                        '\n',
-                        getFooterContent(),
-                        `Date Covered: ${moment().format('MMMM D, YYYY')}`,
+            const documentDefinition: any = {
+                content: [
+                    getHeaderContent(),
+                    '\n',
+                    // `Report Summary for ${test}`,                        
+                    {
+                        text: 'Report Summary by Purok\n',
+                        alignment: 'center',
+                        fontSize: 14,
+                        bold: true
+                    },
+                    '\n',
+                    getTableContent(),
+                    '\n',
+                    getFooterContent(),
+                    `Date Covered: ${moment().format('MMMM D, YYYY')}`,
 
-                    ]
-                };
+                ]
+            };
 
-                pdfMake.createPdf(documentDefinition).download('Report Summary - All Purok.pdf');
+            pdfMake.createPdf(documentDefinition).download('Report Summary - All Purok.pdf');
         },
         async openSummaryReportModal() {
             const modal = await modalController.create({
