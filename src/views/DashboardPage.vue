@@ -111,8 +111,8 @@
                 <ion-button @click="fetchChildRemarks(), fetchChildCount(),
                     fetchChildPurok(), fetchChildAge(), fetchChildPurokRemarks()">Refresh Data</ion-button>
                 <ion-button router-link="/report">Generate Excel</ion-button>
-                <ion-button @click="exportToPDF">Generate Report</ion-button>
-                <!-- <ion-button router-link="/report">Generate Report</ion-button> -->
+                <ion-button @click="openSummaryReportModal">Generate Report</ion-button>
+                <ion-button @click="exportToPDF">Generate Report All Purok</ion-button>
             </ion-toolbar>
         </ion-footer>
 
@@ -132,7 +132,7 @@ import {
     toastController,
     alertController,
     IonRefresher, IonRefresherContent,
-    IonCol, IonRow, IonGrid,
+    IonCol, IonRow, IonGrid, modalController,
 } from '@ionic/vue';
 // icons
 import {
@@ -147,15 +147,12 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend)
 import PieChart from '@/components/PieChart.vue';
 import BarChart from '@/components/BarChart.vue';
+import SummaryReportModal from '@/components/SummaryReportModal.vue';
 import { instance as api } from "@/network/Network";
-// import moment from 'moment';
-// import html2pdf from "html2pdf.js";
-// import html2canvas from "html2canvas";
-// import pdfMake from "pdfmake";
-// import pdfMake from "../../.node_modules/pdfmake/build/pdfmake.js";
+import moment from 'moment';
 import pdfMake from 'pdfmake/build/pdfmake';
 import Image from 'pdfmake/build/pdfmake';
-// import logoImage from '@/assets/images/logo.png'; // Replace with your image file path
+// import myImage from '@/assets/images/logo.png'
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import table from 'pdfmake/build/pdfmake'; 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -194,30 +191,32 @@ export default defineComponent({
             countTotalRemarks: 0,
             countTotalChildsOfAgePerRemark: [0, 0, 0, 0, 0, 0],
             pdfPurokRemark: [
-                ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese'],
-                ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
+                ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Total', 'Row 2 Data', 0, 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
             ],
             pdfAgeRemark: [
-                ['Age','Underweight', 'Normal', 'Overweight', 'Obese'],
-                ['7 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['8 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['9 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['10 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['11 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-                ['12 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data']
+                ['Age','Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['7 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['8 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['9 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['10 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['11 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['12 Years Old', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
+                ['Total', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data', 'Row 4 Data'],
             ],
             remarks_data: {
                 labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
@@ -455,19 +454,56 @@ export default defineComponent({
             api('/child/purok/remarks')
                 .then((response) => response.data)
                 .then((data) => {
+                    let totalChild = 0
+                    let remarksTotal = [0,0,0,0]
+                    let purokTotal = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                     // console.log(data);
+                    data.Underweight.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][1] = element.toString();
+                             remarksTotal[0] += Number(this.pdfPurokRemark[index+1][1]);
+                            totalChild += Number(this.pdfPurokRemark[index+1][1])
+                    });
                     data.Normal.forEach((element:any,index : any) => {
                              this.pdfPurokRemark[index+1][2] = element.toString();
-                    });
-                    data.Obese.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][4] = element.toString();
+                              remarksTotal[1] += Number(this.pdfPurokRemark[index+1][2]);
+                              totalChild += Number(this.pdfPurokRemark[index+1][2])
                     });
                     data.Overweight.forEach((element:any,index : any) => {
                              this.pdfPurokRemark[index+1][3] = element.toString();
+                             remarksTotal[2] += Number(this.pdfPurokRemark[index+1][3]);
+                             totalChild += Number(this.pdfPurokRemark[index+1][3])
                     });
-                    data.Underweight.forEach((element:any,index : any) => {
-                             this.pdfPurokRemark[index+1][1] = element.toString();
+                    data.Obese.forEach((element:any,index : any) => {
+                             this.pdfPurokRemark[index+1][4] = element.toString();
+                             remarksTotal[3] += Number(this.pdfPurokRemark[index+1][4]);
+                             totalChild += Number(this.pdfPurokRemark[index+1][4])
                     });
+
+                    // remark total
+                    this.pdfPurokRemark[this.pdfPurokRemark.length-1].forEach((row: any, i: number) => {
+                        if(i >= 4) return
+                        this.pdfPurokRemark[this.pdfPurokRemark.length-1][i+1] = remarksTotal[i]
+                    })
+
+                    console.log(data)
+
+                    this.pdfPurokRemark.forEach((row: any, i: number) => {
+                        if(i === 0 || i === this.pdfPurokRemark.length - 1) return
+
+                        let total = 0
+
+                        this.pdfPurokRemark[i].forEach((val: any, i: number) => {
+                            if(i <= 0 || i >= 5) return
+                            total += Number(val)
+                        })
+
+                        row[5] = total
+                    })
+
+                    this.pdfPurokRemark[this.pdfPurokRemark.length-1][5] = totalChild
+
+                    // this.pdfPurokRemark[1][5] = purokTotal[1]
+
                     const colors = ['#fdf17d', '#41B883', '#FFA500', '#FF0000']
                     const colors2 = [
                         '#FF0000',
@@ -538,24 +574,6 @@ export default defineComponent({
         },
         exportToPDF() {
             const getTableContent = () => {
-            // const tableData = [
-            //     ['Purok #','Underweight', 'Normal', 'Overweight', 'Obese'],
-            //     ['Purok 1', 'Row 1 Data', 'Row 1 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 2', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 3', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 4', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 5', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 6', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 7', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 8', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 9', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 10', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 11', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 12', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 13', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            //     ['Purok 14', 'Row 2 Data', 'Row 2 Data', 'Row 3 Data', 'Row 4 Data'],
-            // ];
-
             const tableLayout = {
                 fillColor: (rowIndex: number, node: any, columnIndex: any) => {
                 // Customize the background color of the table cells
@@ -567,7 +585,7 @@ export default defineComponent({
                 table: {
                 headerRows: 1,
                 body: this.pdfPurokRemark,
-                widths: ['*', '*', '*', '*', '*'], // Adjust the column widths as needed
+                widths: ['*', '*', '*', '*', '*','*'], // Adjust the column widths as needed
                 layout: tableLayout,
                 }
             };
@@ -577,11 +595,27 @@ export default defineComponent({
 
             const getHeaderContent = () => {
                 return {
-                    text: 'Summary Report', 
+                    text: [
+                    {
+                        text: 'Repulic of the Philippines\n',
+                        fontSize: 16,
+                        bold: true,
+                        
+                    },
+                    {
+                        text: 'Barangay Hall Old Cabalan\n',
+                        fontSize: 14,
+                    },
+                    {
+                        text: [
+                            'Purok 11 Narra Lane, Olongapo City\n',
+                            'Zambales, Philippines 2200\n',
+                        ],
+                        fontSize: 13,
+                    },
+                    ],
                     alignment: 'center',
-                    fontSize: 14,
-                    bold: true,
-                    margin: [0, 20, 0, 10], // Adjust the margins as needed
+                    margin: [0, 20, 0, 10],
                 };
             };
 
@@ -589,9 +623,9 @@ export default defineComponent({
                 return {
                     text: `Prepared by ${localStorage.getItem('fname') || ''} ${localStorage.getItem('lname') || ''}`, // Replace with your desired footer content
                     // alignment: 'center',
-                    fontSize: 10,
+                    fontSize: 12,
                     bold: true,
-                    margin: [0, 10, 0, 0], // Adjust the margins as needed
+                    margin: [0, 14, 0, 0], // Adjust the margins as needed
                 };
             };
 
@@ -600,14 +634,29 @@ export default defineComponent({
                     content: [
                         getHeaderContent(),
                         '\n',
+                        // `Report Summary for ${test}`,                        
+                        {
+                            text: 'Report Summary by Purok\n',
+                            alignment: 'center',
+                            fontSize: 14,
+                            bold: true
+                        },
+                        '\n',
                         getTableContent(),
                         '\n',
                         getFooterContent(),
+                        `Date Covered: ${moment().format('MMMM D, YYYY')}`,
 
                     ]
                 };
 
                 pdfMake.createPdf(documentDefinition).download('example.pdf');
+        },
+        async openSummaryReportModal() {
+            const modal = await modalController.create({
+                component: SummaryReportModal,
+            });
+            modal.present();
         },
     },
     ionViewDidEnter() {

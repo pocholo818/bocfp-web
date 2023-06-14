@@ -15,7 +15,7 @@
                     <ion-card-content>
                         <ion-card-header>
                             <!-- <ion-card-title>Generate Excel</ion-card-title> -->
-                            <ion-card-title>Generate Report</ion-card-title>
+                            <ion-card-title>Generate Excel</ion-card-title>
                         </ion-card-header>
 
                         <ion-list>
