@@ -42,7 +42,7 @@
             </ion-grid>
             <br>
             <!-- <ion-button expand="block" @click="fetchData()">Get Data</ion-button> -->
-            <ion-button expand="block" @click="exportPdf()">Download Report</ion-button>
+            <ion-button expand="block" @click="fetchData()">Download Report</ion-button>
         </ion-list>
 
         <!-- TODO -->
@@ -60,14 +60,14 @@
 
                 <ion-select v-model="childrenRecords.filter" @ionChange="includeChildrenRecords">
                     <ion-select-option value="annually">Annually</ion-select-option>
-                    <ion-select-option value="semi-annually">Semi-Annually</ion-select-option>
+                    <ion-select-option value="semiAnnually">Semi-Annually</ion-select-option>
                     <ion-select-option value="quarterly">Quarterly</ion-select-option>
                     <ion-select-option value="monthly">Monthly</ion-select-option>
                 </ion-select>
             </ion-item><br>
 
-            <!-- <ion-button expand="block" @click="fetchData()">Get Data</ion-button> -->
-            <ion-button expand="block" @click="exportPdf()">Download Report</ion-button>
+            <ion-button expand="block" @click="fetchData()">Download Report</ion-button>
+            <!-- <ion-button expand="block" @click="exportPdf()">Download Report</ion-button> -->
         </ion-list>
     </ion-content>
 </template>
@@ -104,6 +104,7 @@ export default defineComponent({
         return {
             selectedTab: 'specificDateRange',
             apiEndpoint: '',
+            pdfHistory :[],
             pdfPurokRemark2: [
                 ['Purok #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
                 ['Purok 1', 0, 0, 0, 0, 0],
@@ -140,42 +141,37 @@ export default defineComponent({
             //     ['Purok 14', 0, 0, 0, 0, 0],
             //     ['Total', 0, 0, 0, 0, 0],
             // ],
-            // pdfQuarter: [
-            //     ['Quarter #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-            //     ['Quarter 1', 0, 0, 0, 0, 0],
-            //     ['Quarter 2', 0, 0, 0, 0, 0],
-            //     ['Quarter 3', 0, 0, 0, 0, 0],
-            //     ['Quarter 4', 0, 0, 0, 0, 0],
-            //     ['Total', 0, 0, 0, 0, 0],
-            // ],
-            // pdfMonthly: [
-            //     ['Month #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-            //     ['Jan', 0, 0, 0, 0, 0],
-            //     ['Feb', 0, 0, 0, 0, 0],
-            //     ['Mar', 0, 0, 0, 0, 0],
-            //     ['Apr', 0, 0, 0, 0, 0],
-            //     ['May', 0, 0, 0, 0, 0],
-            //     ['Jun', 0, 0, 0, 0, 0],
-            //     ['Jul', 0, 0, 0, 0, 0],
-            //     ['Aug', 0, 0, 0, 0, 0],
-            //     ['Sep', 0, 0, 0, 0, 0],
-            //     ['Oct', 0, 0, 0, 0, 0],
-            //     ['Nov', 0, 0, 0, 0, 0],
-            //     ['Dec', 0, 0, 0, 0, 0],
-            //     ['Total', 0, 0, 0, 0, 0],
-            // ],
-            // pdfSemiAnnually: [
-            //     ['Semi-Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-            //     ['Semi-Annually 1', 0, 0, 0, 0, 0],
-            //     ['Semi-Annually 2', 0, 0, 0, 0, 0],
-            //     ['Total', 0, 0, 0, 0, 0],
-            // ],
-            // pdfAnnually: [
-            //     ['Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-            //     [`${this.childrenRecords.year}`, 0, 0, 0, 0, 0],
-            //     ['Total', 0, 0, 0, 0, 0],
-            // ],
-            childrenRecords: {
+            pdfQuarter: [
+                ['Quarter #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['Quarter 1', 0, 0, 0, 0, 0],
+                ['Quarter 2', 0, 0, 0, 0, 0],
+                ['Quarter 3', 0, 0, 0, 0, 0],
+                ['Quarter 4', 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
+            ],
+            pdfMonthly: [
+                ['Month #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['Jan', 0, 0, 0, 0, 0],
+                ['Feb', 0, 0, 0, 0, 0],
+                ['Mar', 0, 0, 0, 0, 0],
+                ['Apr', 0, 0, 0, 0, 0],
+                ['May', 0, 0, 0, 0, 0],
+                ['Jun', 0, 0, 0, 0, 0],
+                ['Jul', 0, 0, 0, 0, 0],
+                ['Aug', 0, 0, 0, 0, 0],
+                ['Sep', 0, 0, 0, 0, 0],
+                ['Oct', 0, 0, 0, 0, 0],
+                ['Nov', 0, 0, 0, 0, 0],
+                ['Dec', 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
+            ],
+            pdfSemiAnnually: [
+                ['Semi Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                ['Semi Annually 1', 0, 0, 0, 0, 0],
+                ['Semi Annually 2', 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
+            ],
+                  childrenRecords: {
                 to: "",
                 from: "",
                 // to: "2023-06-01",
@@ -183,6 +179,12 @@ export default defineComponent({
                 year: 2020,
                 filter: ""
             },
+            pdfAnnually: [
+                ['Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                [`Data`, 0, 0, 0, 0, 0],
+                ['Total', 0, 0, 0, 0, 0],
+            ],
+      
         }
     },
     setup() {
@@ -208,9 +210,12 @@ export default defineComponent({
             // 
             let req
             let template
-
+  console.log("first r=ry=u");
             if (this.childrenRecords.from && this.childrenRecords.to) {
                 req = `from=${this.childrenRecords.from}&to=${this.childrenRecords.to}`
+                console.log("first if");
+                
+                this.file(req,'range')
                 // template = [
                 //     ['Purok #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
                 //     ['Purok 1', 0, 0, 0, 0, 0],
@@ -232,61 +237,210 @@ export default defineComponent({
             }
             else {
                 req = `filter=${this.childrenRecords.filter}&year=${this.childrenRecords.year}`
-
+                 console.log("first qdqwfwfw");
                 if (this.childrenRecords.filter === 'annually') {
-                    this.pdfPurokRemark2 = [
-                        ['Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                        [`${this.childrenRecords.year}`, 0, 0, 0, 0, 0],
-                        ['Total', 0, 0, 0, 0, 0],
-                    ]
+                    // this.pdfPurokRemark2 = [
+                    //     ['Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                    //     [`${this.childrenRecords.year}`, 0, 0, 0, 0, 0],
+                    //     ['Total', 0, 0, 0, 0, 0],
+                    // ]
+                     this.file(req, 'annually')
                 }
-                else if (this.childrenRecords.filter === 'semi-annually') {
-                    this.pdfPurokRemark2 = [
-                        ['Semi-Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                        ['Semi-Annually 1', 0, 0, 0, 0, 0],
-                        ['Semi-Annually 2', 0, 0, 0, 0, 0],
-                        ['Total', 0, 0, 0, 0, 0],
-                    ]
+                else if (this.childrenRecords.filter === 'semiAnnually') {
+                    // this.pdfPurokRemark2 = [
+                    //     ['semiAnnually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                    //     ['semiAnnually 1', 0, 0, 0, 0, 0],
+                    //     ['semiAnnually 2', 0, 0, 0, 0, 0],
+                    //     ['Total', 0, 0, 0, 0, 0],
+                    // ]
+                    this.file(req, 'semi')
                 }
                 else if (this.childrenRecords.filter === 'quarterly') {
-                    this.pdfPurokRemark2 = [
-                        ['Quarter #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                        ['Quarter 1', 0, 0, 0, 0, 0],
-                        ['Quarter 2', 0, 0, 0, 0, 0],
-                        ['Quarter 3', 0, 0, 0, 0, 0],
-                        ['Quarter 4', 0, 0, 0, 0, 0],
-                        ['Total', 0, 0, 0, 0, 0],
-                    ]
+                    // this.pdfPurokRemark2 = [
+                    //     ['Quarter #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
+                    //     ['Quarter 1', 0, 0, 0, 0, 0],
+                    //     ['Quarter 2', 0, 0, 0, 0, 0],
+                    //     ['Quarter 3', 0, 0, 0, 0, 0],
+                    //     ['Quarter 4', 0, 0, 0, 0, 0],
+                    //     ['Total', 0, 0, 0, 0, 0],
+                    // ]
+                     this.file(req, 'quarterly')
                 }
                 else if (this.childrenRecords.filter === 'monthly') {
-                    this.pdfPurokRemark2 = [
-                        ['Month #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
-                        ['Jan', 0, 0, 0, 0, 0],
-                        ['Feb', 0, 0, 0, 0, 0],
-                        ['Mar', 0, 0, 0, 0, 0],
-                        ['Apr', 0, 0, 0, 0, 0],
-                        ['May', 0, 0, 0, 0, 0],
-                        ['Jun', 0, 0, 0, 0, 0],
-                        ['Jul', 0, 0, 0, 0, 0],
-                        ['Aug', 0, 0, 0, 0, 0],
-                        ['Sep', 0, 0, 0, 0, 0],
-                        ['Oct', 0, 0, 0, 0, 0],
-                        ['Nov', 0, 0, 0, 0, 0],
-                        ['Dec', 0, 0, 0, 0, 0],
-                        ['Total', 0, 0, 0, 0, 0]
-                    ]
+                this.file(req, 'monthly')
                 }
+               
             }
 
-            await api(`/child/report?${req}`)
+           
+        },
+        async file(req : any, content:any){ 
+             await api(`/child/report?${req}`)
                 .then((response) => response.data)
                 .then((data) => {
-                    // console.log(data)
+                    console.log(data)
                     let totalChild = 0
                     let remarksTotal = [0, 0, 0, 0]
                     // let purokTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+                  
+       switch (content) {
+                case 'monthly':
+                    console.log('month');
+                    
+                     data.Underweight.forEach((element: any, index: any) => {
+                        this.pdfMonthly[index + 1][1] = element;
+                        remarksTotal[0] += Number(this.pdfMonthly[index + 1][1]);
+                        totalChild += Number(this.pdfMonthly[index + 1][1])
+                    });
+                    data.Normal.forEach((element: any, index: any) => {
+                        this.pdfMonthly[index + 1][2] = element;
+                        remarksTotal[1] += Number(this.pdfMonthly[index + 1][2]);
+                        totalChild += Number(this.pdfMonthly[index + 1][2])
+                    });
+                    data.Overweight.forEach((element: any, index: any) => {
+                        this.pdfMonthly[index + 1][3] = element;
+                        remarksTotal[2] += Number(this.pdfMonthly[index + 1][3]);
+                        totalChild += Number(this.pdfMonthly[index + 1][3])
+                    });
+                    data.Obese.forEach((element: any, index: any) => {
+                        this.pdfMonthly[index + 1][4] = element;
+                        remarksTotal[3] += Number(this.pdfMonthly[index + 1][4]);
+                        totalChild += Number(this.pdfMonthly[index + 1][4])
+                    });
+                                        // remark total
+                    this.pdfMonthly[this.pdfMonthly.length - 1].forEach((row: any, i: number) => {
+                        if (i >= 4) return
+                        this.pdfMonthly[this.pdfMonthly.length - 1][i + 1] = remarksTotal[i]
+                    })
+                    this.pdfMonthly.forEach((row: any, i: number) => {
+                        if (i === 0 || i === this.pdfMonthly.length - 1) return
+                        let total = 0
+                        this.pdfMonthly[i].forEach((val: any, i: number) => {
+                            if (i <= 0 || i >= 5) return
+                            total += Number(val)
+                        })
+                        row[5] = total
+                    })
+                    this.pdfMonthly[this.pdfMonthly.length - 1][5] = totalChild
+                    break;
+                case 'semi':
+                     console.log('semi')
                     data.Underweight.forEach((element: any, index: any) => {
+                        this.pdfSemiAnnually[index + 1][1] = element;
+                        remarksTotal[0] += Number(this.pdfSemiAnnually[index + 1][1]);
+                        totalChild += Number(this.pdfSemiAnnually[index + 1][1])
+                    });
+                    data.Normal.forEach((element: any, index: any) => {
+                        this.pdfSemiAnnually[index + 1][2] = element;
+                        remarksTotal[1] += Number(this.pdfSemiAnnually[index + 1][2]);
+                        totalChild += Number(this.pdfSemiAnnually[index + 1][2])
+                    });
+                    data.Overweight.forEach((element: any, index: any) => {
+                        this.pdfSemiAnnually[index + 1][3] = element;
+                        remarksTotal[2] += Number(this.pdfSemiAnnually[index + 1][3]);
+                        totalChild += Number(this.pdfSemiAnnually[index + 1][3])
+                    });
+                    data.Obese.forEach((element: any, index: any) => {
+                        this.pdfSemiAnnually[index + 1][4] = element;
+                        remarksTotal[3] += Number(this.pdfSemiAnnually[index + 1][4]);
+                        totalChild += Number(this.pdfSemiAnnually[index + 1][4])
+                    });
+                                        // remark total
+                    this.pdfSemiAnnually[this.pdfSemiAnnually.length - 1].forEach((row: any, i: number) => {
+                        if (i >= 4) return
+                        this.pdfSemiAnnually[this.pdfSemiAnnually.length - 1][i + 1] = remarksTotal[i]
+                    })
+                    this.pdfSemiAnnually.forEach((row: any, i: number) => {
+                        if (i === 0 || i === this.pdfSemiAnnually.length - 1) return
+                        let total = 0
+                        this.pdfSemiAnnually[i].forEach((val: any, i: number) => {
+                            if (i <= 0 || i >= 5) return
+                            total += Number(val)
+                        })
+                        row[5] = total
+                    })
+                    this.pdfSemiAnnually[this.pdfSemiAnnually.length - 1][5] = totalChild
+                    break;
+                case 'quarterly':
+                    data.Underweight.forEach((element: any, index: any) => {
+                        this.pdfQuarter[index + 1][1] = element;
+                        remarksTotal[0] += Number(this.pdfQuarter[index + 1][1]);
+                        totalChild += Number(this.pdfQuarter[index + 1][1])
+                    });
+                    data.Normal.forEach((element: any, index: any) => {
+                        this.pdfQuarter[index + 1][2] = element;
+                        remarksTotal[1] += Number(this.pdfQuarter[index + 1][2]);
+                        totalChild += Number(this.pdfQuarter[index + 1][2])
+                    });
+                    data.Overweight.forEach((element: any, index: any) => {
+                        this.pdfQuarter[index + 1][3] = element;
+                        remarksTotal[2] += Number(this.pdfQuarter[index + 1][3]);
+                        totalChild += Number(this.pdfQuarter[index + 1][3])
+                    });
+                    data.Obese.forEach((element: any, index: any) => {
+                        this.pdfQuarter[index + 1][4] = element;
+                        remarksTotal[3] += Number(this.pdfQuarter[index + 1][4]);
+                        totalChild += Number(this.pdfQuarter[index + 1][4])
+                    });
+                                        // remark total
+                    this.pdfQuarter[this.pdfQuarter.length - 1].forEach((row: any, i: number) => {
+                        if (i >= 4) return
+                        this.pdfQuarter[this.pdfQuarter.length - 1][i + 1] = remarksTotal[i]
+                    })
+                    this.pdfQuarter.forEach((row: any, i: number) => {
+                        if (i === 0 || i === this.pdfQuarter.length - 1) return
+                        let total = 0
+                        this.pdfQuarter[i].forEach((val: any, i: number) => {
+                            if (i <= 0 || i >= 5) return
+                            total += Number(val)
+                        })
+                        row[5] = total
+                    })
+                    this.pdfQuarter[this.pdfQuarter.length - 1][5] = totalChild
+                    
+                    break;
+                case 'annually':
+                     data.Underweight.forEach((element: any, index: any) => {
+                        this.pdfAnnually[index + 1][1] = element;
+                        remarksTotal[0] += Number(this.pdfAnnually[index + 1][1]);
+                        totalChild += Number(this.pdfAnnually[index + 1][1])
+                    });
+                    data.Normal.forEach((element: any, index: any) => {
+                        this.pdfAnnually[index + 1][2] = element;
+                        remarksTotal[1] += Number(this.pdfAnnually[index + 1][2]);
+                        totalChild += Number(this.pdfAnnually[index + 1][2])
+                    });
+                    data.Overweight.forEach((element: any, index: any) => {
+                        this.pdfAnnually[index + 1][3] = element;
+                        remarksTotal[2] += Number(this.pdfAnnually[index + 1][3]);
+                        totalChild += Number(this.pdfAnnually[index + 1][3])
+                    });
+                    data.Obese.forEach((element: any, index: any) => {
+                        this.pdfAnnually[index + 1][4] = element;
+                        remarksTotal[3] += Number(this.pdfAnnually[index + 1][4]);
+                        totalChild += Number(this.pdfAnnually[index + 1][4])
+                    });
+                                        // remark total
+                    this.pdfAnnually[this.pdfAnnually.length - 1].forEach((row: any, i: number) => {
+                        if (i >= 4) return
+                        this.pdfAnnually[this.pdfAnnually.length - 1][i + 1] = remarksTotal[i]
+                    })
+                    this.pdfAnnually.forEach((row: any, i: number) => {
+                        if (i === 0 || i === this.pdfAnnually.length - 1) return
+                        let total = 0
+                        this.pdfAnnually[i].forEach((val: any, i: number) => {
+                            if (i <= 0 || i >= 5) return
+                            total += Number(val)
+                        })
+                        row[5] = total
+                    })
+                    this.pdfAnnually[this.pdfAnnually.length - 1][5] = totalChild
+                    break;
+                case 'range':
+                    console.log("range");
+                    
+                      data.Underweight.forEach((element: any, index: any) => {
                         this.pdfPurokRemark2[index + 1][1] = element;
                         remarksTotal[0] += Number(this.pdfPurokRemark2[index + 1][1]);
                         totalChild += Number(this.pdfPurokRemark2[index + 1][1])
@@ -327,10 +481,38 @@ export default defineComponent({
                     })
 
                     this.pdfPurokRemark2[this.pdfPurokRemark2.length - 1][5] = totalChild
-                    // console.log("total: ", this.pdfPurokRemark2[this.pdfPurokRemark2.length - 1][5])
+                  
+                    break;
+        
+            }
+
+           this.exportPdf()
+
                 })
         },
         async exportPdf() {
+
+            let content : any[]= []
+          if (this.childrenRecords.from && this.childrenRecords.to ) {
+                    content = this.pdfPurokRemark2
+                    console.log(":gere");
+                    
+            }else{
+                if (this.childrenRecords.filter === 'annually') {
+                    content = this.pdfAnnually
+                }
+                else if (this.childrenRecords.filter === 'semiAnnually') {
+                      content = this.pdfSemiAnnually
+                }
+                else if (this.childrenRecords.filter === 'quarterly') {
+                      content = this.pdfQuarter
+                }
+                else if (this.childrenRecords.filter === 'monthly') {
+                  content = this.pdfMonthly
+                }
+            }
+            console.log(content, this.pdfSemiAnnually );
+            
             const getTableContent = () => {
                 const tableLayout = {
                     fillColor: (rowIndex: number, node: any, columnIndex: any) => {
@@ -342,7 +524,7 @@ export default defineComponent({
                 const tableContent = {
                     table: {
                         headerRows: 1,
-                        body: this.pdfPurokRemark2,
+                        body: content,
                         widths: ['*', '*', '*', '*', '*', '*'], // Adjust the column widths as needed
                         layout: tableLayout,
                     }
@@ -395,9 +577,9 @@ export default defineComponent({
             else {
                 fileName = `Report Summary \n`
                 if (this.childrenRecords.filter === 'annually') {
-                    fileName += `(Anually (${this.childrenRecords.year}))`
+                    fileName += `(Annually (${this.childrenRecords.year}))`
                 }
-                else if (this.childrenRecords.filter === 'semi-annually') {
+                else if (this.childrenRecords.filter === 'semiAnnually') {
                     fileName += `(Semi-Annually (${this.childrenRecords.year}))`
                 }
                 else if (this.childrenRecords.filter === 'quarterly') {
@@ -437,8 +619,8 @@ export default defineComponent({
                 if (this.childrenRecords.filter === 'annually') {
                     fileName += `Anually (${this.childrenRecords.year})`
                 }
-                else if (this.childrenRecords.filter === 'semi-annually') {
-                    fileName += `Semi-Annually (${this.childrenRecords.year})`
+                else if (this.childrenRecords.filter === 'semiAnnually') {
+                    fileName += `semiAnnually (${this.childrenRecords.year})`
                 }
                 else if (this.childrenRecords.filter === 'quarterly') {
                     fileName += `Quarterly (${this.childrenRecords.year})`
@@ -448,8 +630,7 @@ export default defineComponent({
                 }
             }
 
-            await this.fetchData()
-
+         
             pdfMake.createPdf(documentDefinition).download(`${fileName}.pdf`);
         },
         numOnly(evt: KeyboardEvent): void {
