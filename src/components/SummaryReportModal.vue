@@ -239,6 +239,7 @@ export default defineComponent({
                 req = `filter=${this.childrenRecords.filter}&year=${this.childrenRecords.year}`
                  console.log("first qdqwfwfw");
                 if (this.childrenRecords.filter === 'annually') {
+                    this.pdfAnnually[1][0] = this.childrenRecords.year
                     // this.pdfPurokRemark2 = [
                     //     ['Annually #', 'Underweight', 'Normal', 'Overweight', 'Obese', 'Total'],
                     //     [`${this.childrenRecords.year}`, 0, 0, 0, 0, 0],
