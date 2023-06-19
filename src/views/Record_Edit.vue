@@ -13,7 +13,7 @@
       <ion-content class="ion-padding">
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Add Record</ion-card-title>
+            <ion-card-title>Edit Record</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
